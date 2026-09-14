@@ -1,0 +1,183 @@
+/* Seed timetable. Edit this file to permanently change the default schedule.
+   The in-app editor also saves a copy in the browser (localStorage) and can
+   export/import JSON so you can add, delete, or replace gyms later. */
+window.AF_SEED = {
+  version: 1,
+  gyms: [
+    {
+      id: "mountbatten",
+      name: "Mountbatten",
+      region: "east",
+      color: "#8b5cf6",
+      whatsapp: "92760599",
+      whatsappLabel: "预约",
+      bookingNote: "WhatsApp 报名：姓名 + 课程和日期 → 9276 0599",
+      notes: "",
+      classes: [
+        { id: "mb-mon-1900-boxing", day: "mon", name: "Boxing Cardio / Conditioning / HIIT", start: "19:00", end: "20:00" },
+        { id: "mb-tue-1200-yogalate", day: "tue", name: "Yogalate", start: "12:00", end: "13:00" },
+        { id: "mb-tue-1800-yoga", day: "tue", name: "Yoga", start: "18:00", end: "19:00" },
+        { id: "mb-tue-1900-kickboxing", day: "tue", name: "Cardio / Kickboxing", start: "19:00", end: "20:00" },
+        { id: "mb-tue-1930-run", day: "tue", name: "Run Club", start: "19:30", end: "20:30" },
+        { id: "mb-wed-1800-pilates", day: "wed", name: "Pilates", start: "18:00", end: "19:00" },
+        { id: "mb-wed-1900-boxing", day: "wed", name: "Boxing Cardio / Conditioning / HIIT", start: "19:00", end: "20:00" },
+        { id: "mb-thu-1900-boxing", day: "thu", name: "Boxing Cardio / Conditioning / HIIT", start: "19:00", end: "20:00" },
+        { id: "mb-sat-1330-hiit", day: "sat", name: "HIIT", start: "13:30", end: "14:30" },
+        { id: "mb-sun-1000-yoga", day: "sun", name: "Yoga", start: "10:00", end: "11:00" },
+        { id: "mb-sun-1200-hyrox", day: "sun", name: "HYROX", start: "12:00", end: "13:00" }
+      ]
+    },
+    {
+      id: "marine-parade",
+      name: "Marine Parade XXL",
+      region: "east",
+      color: "#f97316",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingNote: "",
+      notes: "",
+      classes: [
+        { id: "mp-mon-1900-bodycombat", day: "mon", name: "BodyCombat", start: "19:00", end: "20:00" },
+        { id: "mp-tue-1900-yoga", day: "tue", name: "Yoga", start: "19:00", end: "20:00" },
+        { id: "mp-wed-1900-pilates", day: "wed", name: "Mobility Pilates", start: "19:00", end: "20:00" },
+        { id: "mp-thu-1900-zumba", day: "thu", name: "Zumba", start: "19:00", end: "20:00" },
+        { id: "mp-fri-1900-hiit", day: "fri", name: "HIIT", start: "19:00", end: "20:00", note: "New" },
+        { id: "mp-sat-1100-pilates", day: "sat", name: "Pilates", start: "11:00", end: "12:00" }
+      ]
+    },
+    {
+      id: "katong",
+      name: "Katong",
+      region: "east",
+      color: "#14b8a6",
+      whatsapp: "90187538",
+      whatsappLabel: "取消/改期",
+      bookingNote: "取消预约请 WhatsApp 9018 7538",
+      notes: "",
+      classes: [
+        { id: "kt-mon-1200-hiit", day: "mon", name: "myzone HIIT", start: "12:00", end: "12:30", instructor: "Shaun" },
+        { id: "kt-mon-1830-yoga", day: "mon", name: "Yoga Stretch", start: "18:30", end: "19:30", instructor: "Gerald" },
+        { id: "kt-mon-1940-pump", day: "mon", name: "Les Mills BODYPUMP", start: "19:40", end: "20:40", instructor: "Jess" },
+        { id: "kt-mon-2045-mobility", day: "mon", name: "Mobility Yoga", start: "20:45", end: "21:45", instructor: "Ian" },
+        { id: "kt-tue-1200-hiit", day: "tue", name: "myzone HIIT", start: "12:00", end: "12:30", instructor: "Cedrick" },
+        { id: "kt-tue-1850-pump", day: "tue", name: "Les Mills BODYPUMP", start: "18:50", end: "19:50", instructor: "Donovan" },
+        { id: "kt-tue-2000-attack", day: "tue", name: "Les Mills BODYATTACK", start: "20:00", end: "21:00", instructor: "Raymond" },
+        { id: "kt-wed-1200-hiit", day: "wed", name: "myzone HIIT", start: "12:00", end: "12:30", instructor: "Cedrick" },
+        { id: "kt-wed-1830-stretch", day: "wed", name: "Deep Stretch", start: "18:30", end: "19:30", instructor: "Ian" },
+        { id: "kt-wed-1940-pump", day: "wed", name: "Les Mills BODYPUMP", start: "19:40", end: "20:40", instructor: "Jess" },
+        { id: "kt-wed-2045-pilates", day: "wed", name: "Pilates", start: "20:45", end: "21:45", instructor: "Levian" },
+        { id: "kt-thu-1200-hiit", day: "thu", name: "myzone HIIT", start: "12:00", end: "12:30", instructor: "Shaun" },
+        { id: "kt-thu-1840-pump", day: "thu", name: "Les Mills BODYPUMP", start: "18:40", end: "19:40", instructor: "Jex" },
+        { id: "kt-thu-1940-combat", day: "thu", name: "Les Mills BODYCOMBAT", start: "19:40", end: "20:40", instructor: "Zijun" },
+        { id: "kt-thu-2045-yoga", day: "thu", name: "Yoga", start: "20:45", end: "21:45", instructor: "Aaron" },
+        { id: "kt-fri-1830-flow", day: "fri", name: "Yoga Flow", start: "18:30", end: "19:30", instructor: "Gerald" },
+        { id: "kt-fri-1940-pump", day: "fri", name: "Les Mills BODYPUMP", start: "19:40", end: "20:40", instructor: "Gerald" },
+        { id: "kt-sat-0900-combat", day: "sat", name: "Les Mills BODYCOMBAT", start: "09:00", end: "10:00", instructor: "Michael" },
+        { id: "kt-sat-1120-yoga", day: "sat", name: "Yoga Stretch", start: "11:20", end: "12:20", instructor: "Aaron" },
+        { id: "kt-sat-1230-pump", day: "sat", name: "Les Mills BODYPUMP", start: "12:30", end: "13:30", instructor: "Aaron" },
+        { id: "kt-sat-1340-attack", day: "sat", name: "Les Mills BODYATTACK", start: "13:40", end: "14:40", instructor: "Raymond" },
+        { id: "kt-sun-0900-attack", day: "sun", name: "Les Mills BODYATTACK", start: "09:00", end: "10:00", instructor: "Merv" },
+        { id: "kt-sun-1000-pump", day: "sun", name: "Les Mills BODYPUMP", start: "10:00", end: "11:00", instructor: "Donovan" },
+        { id: "kt-sun-1115-combat", day: "sun", name: "Les Mills BODYCOMBAT", start: "11:15", end: "12:15", instructor: "Crystal" }
+      ]
+    },
+    {
+      id: "pasir-panjang",
+      name: "Pasir Panjang",
+      region: "west",
+      color: "#06b6d4",
+      whatsapp: "98396017",
+      whatsappLabel: "取消/改期",
+      bookingNote: "取消预约请 WhatsApp 9839 6017",
+      notes: "",
+      classes: [
+        { id: "pp-mon-0700-pilates", day: "mon", name: "Pilates", start: "07:00", end: "08:00", instructor: "Levian" },
+        { id: "pp-mon-1230-circuit", day: "mon", name: "Circuit Training", start: "12:30", end: "13:00", instructor: "Risham" },
+        { id: "pp-mon-1700-functional", day: "mon", name: "Functional Training", start: "17:00", end: "17:30", instructor: "Shah" },
+        { id: "pp-mon-1830-cycling", day: "mon", name: "Indoor Cycling", start: "18:30", end: "19:30", instructor: "Amanda" },
+        { id: "pp-mon-1940-pump", day: "mon", name: "Les Mills BODYPUMP", start: "19:40", end: "20:40", instructor: "Eckhart" },
+        { id: "pp-mon-1940-core", day: "mon", name: "Basic Core", start: "19:40", end: "20:40", instructor: "Amanda", note: "New location" },
+        { id: "pp-tue-1230-circuit", day: "tue", name: "Circuit Training", start: "12:30", end: "13:00", instructor: "Risham" },
+        { id: "pp-tue-1830-stretch", day: "tue", name: "Deep Stretch Therapy", start: "18:30", end: "19:30", instructor: "Gerald", note: "New location" },
+        { id: "pp-tue-1900-pump", day: "tue", name: "Les Mills BODYPUMP", start: "19:00", end: "20:00", instructor: "Jacky" },
+        { id: "pp-tue-1940-meditation", day: "tue", name: "Meditation & Sound Bath", start: "19:40", end: "20:40", instructor: "Gerald", note: "New location" },
+        { id: "pp-tue-2000-combat", day: "tue", name: "Les Mills BODYCOMBAT", start: "20:00", end: "21:00", instructor: "Jacky" },
+        { id: "pp-wed-1830-yoga", day: "wed", name: "Yoga", start: "18:30", end: "19:30", instructor: "Amanda", note: "New location" },
+        { id: "pp-wed-1840-pump", day: "wed", name: "Les Mills BODYPUMP", start: "18:40", end: "19:40", instructor: "Jasmin" },
+        { id: "pp-wed-1940-stretch", day: "wed", name: "Yoga Stretch", start: "19:40", end: "20:40", instructor: "Amanda", note: "New location" },
+        { id: "pp-wed-1950-bounce", day: "wed", name: "Bounce Fit", start: "19:50", end: "20:50", instructor: "Irene Tan" },
+        { id: "pp-thu-1215-functional", day: "thu", name: "Functional Training", start: "12:15", end: "12:45", instructor: "Shah" },
+        { id: "pp-thu-1830-combat", day: "thu", name: "Les Mills BODYCOMBAT", start: "18:30", end: "19:30", instructor: "Levian" },
+        { id: "pp-thu-1930-dance", day: "thu", name: "Choreography Dance", start: "19:30", end: "20:30", instructor: "Ah Thong" },
+        { id: "pp-thu-1930-pilates", day: "thu", name: "Pilates", start: "19:30", end: "20:30", instructor: "Levian" },
+        { id: "pp-fri-0800-pump", day: "fri", name: "Les Mills BODYPUMP", start: "08:00", end: "09:00", instructor: "Jason" },
+        { id: "pp-fri-1215-kickboxing", day: "fri", name: "Kickboxing", start: "12:15", end: "12:45", instructor: "Peter" },
+        { id: "pp-fri-1830-pump", day: "fri", name: "Les Mills BODYPUMP", start: "18:30", end: "19:30", instructor: "Jasmin" },
+        { id: "pp-fri-1940-combat", day: "fri", name: "Les Mills BODYCOMBAT", start: "19:40", end: "20:40", instructor: "Jovan" },
+        { id: "pp-sat-0900-pump", day: "sat", name: "Les Mills BODYPUMP", start: "09:00", end: "10:00", instructor: "Jovan" },
+        { id: "pp-sat-1015-combat", day: "sat", name: "Les Mills BODYCOMBAT", start: "10:15", end: "11:15", instructor: "Jovan" },
+        { id: "pp-sat-1130-yin", day: "sat", name: "Yin & Myofascial Release", start: "11:30", end: "12:30", instructor: "Amanda" },
+        { id: "pp-sat-1330-bounce", day: "sat", name: "Bounce Fit", start: "13:30", end: "14:30", instructor: "Irene Tan" },
+        { id: "pp-sun-1100-yoga", day: "sun", name: "Yoga Stretch & Twist", start: "11:00", end: "12:00", instructor: "Amanda" },
+        { id: "pp-sun-1215-pump", day: "sun", name: "Les Mills BODYPUMP", start: "12:15", end: "13:15", instructor: "Anthony" },
+        { id: "pp-sun-1330-kpop", day: "sun", name: "KPOP Fitness", start: "13:30", end: "14:30", instructor: "Uniee" }
+      ]
+    },
+    {
+      id: "wheelock-place",
+      name: "Wheelock Place",
+      region: "central",
+      color: "#a855f7",
+      whatsapp: "85120878",
+      whatsappLabel: "WhatsApp",
+      bookingUrl: "https://pt.af247.app/me/login",
+      bookingNote: "会员线上预约。非本店会员也可 WhatsApp 8512 0878。公共假期没课。",
+      notes: "Q4 课表 · 会员免费",
+      classes: [
+        { id: "wp-mon-1830-pilates", day: "mon", name: "Pilates", start: "18:30", end: "19:30" },
+        { id: "wp-mon-1930-zumba", day: "mon", name: "Zumba", start: "19:30", end: "20:30" },
+        { id: "wp-tue-1900-bar", day: "tue", name: "Bar Strength", start: "19:00", end: "20:00" },
+        { id: "wp-wed-1930-zumba", day: "wed", name: "Zumba", start: "19:30", end: "20:30" },
+        { id: "wp-thu-1830-yoga", day: "thu", name: "Hatha Yoga", start: "18:30", end: "19:20" },
+        { id: "wp-thu-1930-bar", day: "thu", name: "Bar Strength", start: "19:30", end: "20:30" },
+        { id: "wp-fri-1930-zumba", day: "fri", name: "Zumba", start: "19:30", end: "20:30" },
+        { id: "wp-sat-1100-yoga", day: "sat", name: "Hatha Yoga", start: "11:00", end: "12:00" }
+      ]
+    },
+    {
+      id: "macpherson-mall",
+      name: "MacPherson Mall",
+      region: "central",
+      color: "#3b82f6",
+      whatsapp: "89004077",
+      whatsappLabel: "预约",
+      bookingNote: "开课前一天开放预约，WhatsApp 8900 4077。本店会员优先。",
+      notes: "",
+      classes: [
+        { id: "mc-mon-1900-chair", day: "mon", name: "Chair Yoga", start: "19:00", end: "20:00" },
+        { id: "mc-tue-1900-hiit", day: "tue", name: "HIIT", start: "19:00", end: "19:30" },
+        { id: "mc-wed-1900-boxing", day: "wed", name: "Boxing", start: "19:00", end: "20:00" },
+        { id: "mc-thu-1900-muay", day: "thu", name: "Muay Thai", start: "19:00", end: "20:00" },
+        { id: "mc-sat-0930-yin", day: "sat", name: "Yin Yoga", start: "09:30", end: "10:30" }
+      ]
+    },
+    {
+      id: "cecil-street",
+      name: "Cecil Street",
+      region: "central",
+      color: "#94a3b8",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingNote: "门口课表有 WhatsApp 二维码，可扫码预约。",
+      notes: "周五中午那格原图被遮住，按 Yoga 12:15（All Levels）录入，如有误可在编辑里改。",
+      classes: [
+        { id: "cs-mon-1215-yoga", day: "mon", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels" },
+        { id: "cs-mon-1845-yoga", day: "mon", name: "Yoga", start: "18:45", end: "19:45", level: "all", note: "All Levels" },
+        { id: "cs-tue-1845-yoga", day: "tue", name: "Yoga", start: "18:45", end: "19:45", level: "all", note: "All Levels" },
+        { id: "cs-wed-1215-yoga", day: "wed", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels" },
+        { id: "cs-thu-1845-pilates", day: "thu", name: "Pilates", start: "18:45", end: "19:45" },
+        { id: "cs-fri-1215-yoga", day: "fri", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels · 原图有遮挡" }
+      ]
+    }
+  ]
+};

@@ -1,0 +1,17 @@
+{
+  "name": "AF 团课课表",
+  "short_name": "AF 团课",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07060f",
+  "theme_color": "#07060f",
+  "lang": "zh-Hans",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

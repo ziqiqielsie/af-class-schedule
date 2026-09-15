@@ -1,20 +1,25 @@
 :root {
-  --bg: #07060f;
-  --bg-2: #100d1c;
-  --card: rgba(28, 23, 48, 0.86);
-  --card-solid: #171328;
-  --line: rgba(255, 255, 255, 0.08);
-  --text: #f6f3ff;
-  --muted: #9d96b8;
-  --accent: #c4b5fd;
-  --accent-strong: #8b5cf6;
-  --good: #34d399;
-  --warn: #fbbf24;
-  --danger: #fb7185;
-  --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
-  --radius: 18px;
+  --bg: #fff4dc;
+  --bg-2: #ffe7b8;
+  --water: #b7e4e2;
+  --water-deep: #7ec8c4;
+  --card: rgba(255, 251, 244, 0.92);
+  --card-solid: #fffaf3;
+  --line: rgba(184, 122, 62, 0.16);
+  --text: #5c3d2e;
+  --muted: #a67c52;
+  --accent: #e8893a;
+  --accent-strong: #f4a261;
+  --mango: #f0c989;
+  --sprout: #7cb518;
+  --good: #5ea000;
+  --warn: #e8893a;
+  --danger: #e07a5f;
+  --blush: #f4a7b9;
+  --shadow: 0 14px 36px rgba(184, 122, 62, 0.16);
+  --radius: 24px;
   --header-h: 64px;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -26,11 +31,13 @@ body {
   margin: 0;
   min-height: 100%;
   background:
-    radial-gradient(1200px 500px at 10% -10%, rgba(124, 58, 237, 0.28), transparent 55%),
-    radial-gradient(900px 420px at 110% 0%, rgba(20, 184, 166, 0.16), transparent 50%),
-    var(--bg);
+    radial-gradient(circle at 12% 8%, rgba(244, 162, 97, 0.28), transparent 28%),
+    radial-gradient(circle at 92% 0%, rgba(124, 181, 24, 0.16), transparent 26%),
+    radial-gradient(circle at 80% 88%, rgba(126, 200, 196, 0.45), transparent 34%),
+    radial-gradient(circle at 8% 92%, rgba(244, 167, 185, 0.22), transparent 30%),
+    linear-gradient(180deg, #fff7e6 0%, #ffe9c4 48%, #d9f0ee 100%);
   color: var(--text);
-  font-family: Outfit, "PingFang SC", "Noto Sans SC", sans-serif;
+  font-family: Nunito, "PingFang SC", "Noto Sans SC", sans-serif;
 }
 
 body {
@@ -39,6 +46,39 @@ body {
     env(safe-area-inset-right)
     env(safe-area-inset-bottom)
     env(safe-area-inset-left);
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  width: 140px;
+  height: 140px;
+  top: 18px;
+  right: -28px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, #ffd29a 0 28%, #f4a261 29% 72%, #e8893a 73%);
+  box-shadow:
+    -18px 72px 0 -46px #f4a261,
+    inset -10px -12px 0 #e8893a;
+  opacity: 0.55;
+}
+
+body::after {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 120px;
+  background:
+    radial-gradient(120px 40px at 18% 80%, rgba(255, 255, 255, 0.55), transparent 70%),
+    radial-gradient(160px 50px at 72% 90%, rgba(255, 255, 255, 0.4), transparent 70%),
+    linear-gradient(180deg, transparent, rgba(126, 200, 196, 0.35));
 }
 
 button,
@@ -54,9 +94,11 @@ button {
 }
 
 #app {
+  position: relative;
+  z-index: 1;
   max-width: 980px;
   margin: 0 auto;
-  padding: 16px 16px 48px;
+  padding: 16px 16px 72px;
 }
 
 .topbar {
@@ -78,28 +120,33 @@ button {
   align-items: center;
   gap: 8px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   font-size: 13px;
   color: var(--accent);
-  text-transform: uppercase;
 }
 
 .logo-mark {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: #fff3d9;
+  border: 2px solid rgba(232, 137, 58, 0.25);
   display: grid;
   place-items: center;
-  color: white;
-  font-size: 11px;
-  font-weight: 800;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(232, 137, 58, 0.18);
+}
+
+.logo-mark .lulu-svg {
+  width: 40px;
+  height: 40px;
 }
 
 h1 {
   margin: 0;
   font-size: 28px;
   letter-spacing: -0.04em;
+  color: #4a2f22;
 }
 
 .subtitle {
@@ -116,22 +163,24 @@ h1 {
 .icon-btn,
 .btn {
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 12px;
-  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  padding: 10px 14px;
   color: var(--text);
+  font-weight: 700;
 }
 
 .btn.primary {
-  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  background: linear-gradient(180deg, #ffc078, #f4a261);
   border-color: transparent;
-  font-weight: 600;
+  color: #5c3d2e;
+  box-shadow: 0 8px 16px rgba(244, 162, 97, 0.35);
 }
 
 .btn.danger {
-  background: rgba(251, 113, 133, 0.12);
-  border-color: rgba(251, 113, 133, 0.3);
-  color: #fecdd3;
+  background: rgba(224, 122, 95, 0.12);
+  border-color: rgba(224, 122, 95, 0.3);
+  color: #b8573e;
 }
 
 .btn.ghost {
@@ -146,27 +195,28 @@ h1 {
 .tabs {
   display: flex;
   gap: 6px;
-  padding: 4px;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.55);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 999px;
   margin-bottom: 14px;
+  box-shadow: var(--shadow);
 }
 
 .tabs button {
   flex: 1;
   border: 0;
   background: transparent;
-  border-radius: 10px;
+  border-radius: 999px;
   padding: 10px 8px;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .tabs button.active {
-  background: var(--card-solid);
+  background: linear-gradient(180deg, #fff, #ffe7c2);
   color: var(--text);
-  box-shadow: var(--shadow);
+  box-shadow: 0 6px 14px rgba(184, 122, 62, 0.14);
 }
 
 .search {
@@ -180,8 +230,8 @@ h1 {
 .field textarea {
   width: 100%;
   border: 1px solid var(--line);
-  background: rgba(8, 6, 16, 0.7);
-  border-radius: 14px;
+  background: rgba(255, 250, 243, 0.9);
+  border-radius: 18px;
   padding: 12px 14px;
   outline: none;
   font-size: 16px;
@@ -191,8 +241,8 @@ h1 {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: rgba(167, 139, 250, 0.7);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+  border-color: rgba(244, 162, 97, 0.8);
+  box-shadow: 0 0 0 3px rgba(244, 162, 97, 0.22);
 }
 
 .chip-row {
@@ -211,18 +261,19 @@ h1 {
 .chip {
   flex: 0 0 auto;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--muted);
   border-radius: 999px;
   padding: 8px 12px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .chip.active {
-  color: white;
+  color: #fff8ef;
   border-color: transparent;
   background: var(--chip, var(--accent-strong));
+  box-shadow: 0 8px 16px rgba(244, 162, 97, 0.28);
 }
 
 .day-row .chip {
@@ -234,8 +285,8 @@ h1 {
 .day-row .chip small {
   display: block;
   font-size: 10px;
-  font-weight: 500;
-  opacity: 0.8;
+  font-weight: 700;
+  opacity: 0.85;
 }
 
 .meta-row {
@@ -254,9 +305,10 @@ h1 {
   gap: 6px;
   padding: 4px 8px;
   border-radius: 999px;
-  background: rgba(52, 211, 153, 0.12);
+  background: rgba(124, 181, 24, 0.16);
   color: var(--good);
   font-size: 12px;
+  font-weight: 800;
 }
 
 .list {
@@ -282,8 +334,9 @@ h1 {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 4px;
+  width: 6px;
   background: var(--gym-color, var(--accent-strong));
+  border-radius: 0 8px 8px 0;
 }
 
 .class-card {
@@ -295,7 +348,7 @@ h1 {
 
 .time {
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 15px;
   line-height: 1.25;
 }
@@ -304,11 +357,11 @@ h1 {
   display: block;
   color: var(--muted);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .class-name {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
   letter-spacing: -0.02em;
 }
@@ -321,13 +374,13 @@ h1 {
 
 .live {
   color: var(--good);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 12px;
 }
 
 .soon {
   color: var(--warn);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 12px;
 }
 
@@ -335,11 +388,11 @@ h1 {
   justify-self: end;
   align-self: start;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.04em;
   padding: 5px 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(244, 162, 97, 0.14);
   color: var(--accent);
   white-space: nowrap;
 }
@@ -350,7 +403,7 @@ h1 {
   color: var(--accent);
   text-decoration: none;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 button.wa-link {
@@ -374,8 +427,25 @@ button.wa-link {
 
 .empty {
   text-align: center;
-  padding: 42px 16px;
+  padding: 36px 16px 28px;
   color: var(--muted);
+}
+
+.empty .lulu-svg {
+  width: 92px;
+  height: 108px;
+  margin: 0 auto 8px;
+  display: block;
+  animation: lulu-bob 2.8s ease-in-out infinite;
+}
+
+.empty.card::before {
+  display: none;
+}
+
+.empty p {
+  margin: 0;
+  font-weight: 700;
 }
 
 .gym-week h2,
@@ -388,6 +458,7 @@ button.wa-link {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 8px;
 }
@@ -395,7 +466,7 @@ button.wa-link {
 .day-label {
   color: var(--muted);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 14px 0 8px;
@@ -443,7 +514,7 @@ button.wa-link {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(92, 61, 46, 0.28);
   display: grid;
   place-items: end center;
   z-index: 20;
@@ -452,9 +523,9 @@ button.wa-link {
 
 .modal {
   width: min(560px, 100%);
-  background: #141022;
+  background: #fffaf3;
   border: 1px solid var(--line);
-  border-radius: 22px 22px 16px 16px;
+  border-radius: 28px 28px 18px 18px;
   padding: 18px;
   max-height: min(88vh, 760px);
   overflow: auto;
@@ -475,6 +546,7 @@ button.wa-link {
   font-size: 12px;
   color: var(--muted);
   margin-bottom: 6px;
+  font-weight: 800;
 }
 
 .two {
@@ -501,17 +573,42 @@ button.wa-link {
   left: 50%;
   bottom: calc(18px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
-  background: #1e1933;
+  background: #fff3d9;
   border: 1px solid var(--line);
   color: var(--text);
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: 999px;
   z-index: 30;
   box-shadow: var(--shadow);
+  font-weight: 800;
 }
 
 .hidden-file {
   display: none;
+}
+
+.lulu-svg .steam {
+  fill: none;
+  stroke: #7ec8c4;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+@keyframes lulu-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .empty .lulu-svg {
+    animation: none;
+  }
 }
 
 @media (min-width: 800px) {
@@ -528,7 +625,7 @@ button.wa-link {
   }
 
   .modal {
-    border-radius: 22px;
+    border-radius: 28px;
   }
 }
 

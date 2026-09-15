@@ -89,6 +89,7 @@
     for (const gym of data.gyms) {
       const seeded = fromSeed.get(gym.id);
       if (!seeded) continue;
+      if (seeded.color) gym.color = seeded.color;
       if (seeded.bookingUrl && !gym.bookingUrl) {
         gym.bookingUrl = seeded.bookingUrl;
         gym.bookingNote = seeded.bookingNote;
@@ -410,14 +411,61 @@
     bind();
   }
 
+  function luluSvg(kind = "mark") {
+    const steam = kind === "empty"
+      ? `<g class="steam" aria-hidden="true">
+          <path d="M28 18c0-6 6-6 6-12"/>
+          <path d="M40 16c0-7 7-7 7-14"/>
+          <path d="M54 18c0-6 6-6 6-12"/>
+        </g>`
+      : "";
+    const viewBox = kind === "mark" ? "20 10 80 92" : "0 0 120 140";
+    return `
+      <svg class="lulu-svg" viewBox="${viewBox}" role="img" aria-label="水豚噜噜">
+        ${steam}
+        <ellipse cx="60" cy="28" rx="22" ry="15" fill="#F4A261"/>
+        <ellipse cx="60" cy="25" rx="16" ry="10" fill="#E8893A"/>
+        <path d="M76 14c6 2 9 8 7 13-5-2-10-6-11-10z" fill="#7CB518"/>
+        <ellipse cx="36" cy="52" rx="10" ry="13" fill="#E8C48A"/>
+        <ellipse cx="84" cy="52" rx="10" ry="13" fill="#E8C48A"/>
+        <ellipse cx="36" cy="53" rx="5" ry="7" fill="#F5D7A8"/>
+        <ellipse cx="84" cy="53" rx="5" ry="7" fill="#F5D7A8"/>
+        <ellipse cx="60" cy="86" rx="42" ry="36" fill="#F0C989"/>
+        <ellipse cx="60" cy="98" rx="26" ry="22" fill="#F8E4B8"/>
+        <ellipse cx="24" cy="94" rx="11" ry="8" fill="#E8C48A"/>
+        <ellipse cx="96" cy="94" rx="11" ry="8" fill="#E8C48A"/>
+        <ellipse cx="44" cy="124" rx="13" ry="7" fill="#E8B86A"/>
+        <ellipse cx="76" cy="124" rx="13" ry="7" fill="#E8B86A"/>
+        <ellipse cx="32" cy="88" rx="8" ry="5" fill="#F4A7B9" opacity=".75"/>
+        <ellipse cx="88" cy="88" rx="8" ry="5" fill="#F4A7B9" opacity=".75"/>
+        <circle cx="44" cy="74" r="8.5" fill="#fff"/>
+        <circle cx="76" cy="74" r="8.5" fill="#fff"/>
+        <circle cx="45" cy="75" r="4.8" fill="#3D2914"/>
+        <circle cx="75" cy="75" r="4.8" fill="#3D2914"/>
+        <circle cx="47" cy="73" r="1.7" fill="#fff"/>
+        <circle cx="77" cy="73" r="1.7" fill="#fff"/>
+        <ellipse cx="60" cy="90" rx="14" ry="10" fill="#E8A66A"/>
+        <circle cx="55" cy="89" r="1.6" fill="#5C3D2E"/>
+        <circle cx="65" cy="89" r="1.6" fill="#5C3D2E"/>
+        <path d="M52 98c4.6 5 11.4 5 16 0" fill="none" stroke="#5C3D2E" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M56 98h3v3c0 1.2-.8 2-2 2h-1z" fill="#fff"/>
+        <path d="M61 98h3v3c0 1.2-.8 2-2 2h-1z" fill="#fff"/>
+      </svg>
+    `;
+  }
+
+  function emptyHtml(message) {
+    return `<div class="empty card">${luluSvg("empty")}<p>${escapeHtml(message)}</p></div>`;
+  }
+
   function renderHeader() {
     const today = dayFull(todayId());
     return `
       <header class="topbar">
         <div class="brand">
-          <div class="logo"><span class="logo-mark">AF</span> Anytime Fitness</div>
+          <div class="logo"><span class="logo-mark">${luluSvg("mark")}</span> 噜噜课表</div>
           <h1>团课课表</h1>
-          <div class="subtitle">今天是${today} · 新加坡时间 · ${state.data.gyms.length} 家门店</div>
+          <div class="subtitle">今天是${today} · 新加坡时间 · ${state.data.gyms.length} 家门店 · 噜噜陪你上课</div>
         </div>
         <div class="top-actions">
           <button class="btn ${state.view === "manage" ? "primary" : ""}" data-action="toggle-manage">
@@ -440,7 +488,7 @@
 
   function renderBrowse() {
     return `
-      <div class="search"><input id="q" type="search" placeholder="搜课程、教练或门店" value="${escapeHtml(state.query)}" /></div>
+      <div class="search"><input id="q" type="search" placeholder="搜课程、教练或门店 🍊" value="${escapeHtml(state.query)}" /></div>
       ${state.view === "day" ? renderGymChips() : ""}
       ${renderKindChips()}
       ${state.view === "day" ? renderDayView() : renderGymView()}
@@ -482,7 +530,7 @@
         </span>
       </div>
       <div class="list">
-        ${rows.length ? rows.map(renderClassCard).join("") : `<div class="empty card">这天没有符合筛选的团课。</div>`}
+        ${rows.length ? rows.map(renderClassCard).join("") : emptyHtml("噜噜这天去泡温泉了，没有符合筛选的团课。")}
       </div>
     `;
   }
@@ -515,7 +563,7 @@
     const selected = state.gymId && gyms.some((gym) => gym.id === state.gymId) ? state.gymId : gyms[0]?.id;
     state.gymId = selected || null;
     const gym = gymById(state.gymId);
-    if (!gym) return `<div class="empty card">还没有门店。去「编辑课表」添加一家吧。</div>`;
+    if (!gym) return emptyHtml("还没有门店。去「编辑课表」添加一家吧。");
     return `
       <div class="chip-row">
         ${gyms.map((item) => `
@@ -542,7 +590,7 @@
           <div class="day-label">${day.full}${day.id === todayId() ? " · 今天" : ""}</div>
           <div class="list">${items.map((item) => renderClassCard({ gym, item })).join("")}</div>
         `;
-      }).join("") || `<div class="empty card">这家店暂时没有符合筛选的课。</div>`}
+      }).join("") || emptyHtml("这家店暂时没有符合筛选的课。")}
     `;
   }
 
@@ -556,7 +604,7 @@
       </div>
       <p class="hint">改动会保存在这台设备的浏览器里。想长期保留或换手机用，请先导出 JSON；也可以把导出内容贴进 <code>data/schedules.js</code> 作为新的默认课表。</p>
       ${isDirty() ? `<div class="meta-row"><span class="pill">已有本地修改，尚未写回默认文件</span></div>` : ""}
-      ${state.data.gyms.map(renderGymManage).join("") || `<div class="empty card">还没有门店。</div>`}
+      ${state.data.gyms.map(renderGymManage).join("") || emptyHtml("还没有门店。")}
     `;
   }
 
@@ -617,7 +665,7 @@
                   ${Object.entries(REGIONS).map(([id, label]) => `<option value="${id}" ${gym.region === id ? "selected" : ""}>${label}</option>`).join("")}
                 </select>
               </div>
-              <div class="field"><label>颜色</label><input name="color" type="color" value="${escapeHtml(gym.color || "#8b5cf6")}" /></div>
+              <div class="field"><label>颜色</label><input name="color" type="color" value="${escapeHtml(gym.color || "#f4a261")}" /></div>
             </div>
             <div class="two">
               <div class="field"><label>WhatsApp（8 位新加坡号码）</label><input name="whatsapp" inputmode="numeric" value="${escapeHtml(gym.whatsapp || "")}" /></div>
@@ -780,7 +828,7 @@
       if (btn) btn.addEventListener("click", fn);
     };
     action("add-gym", () => {
-      state.modal = { type: "gym", gym: { name: "", region: "east", color: "#8b5cf6", whatsapp: "", whatsappLabel: "预约", bookingUrl: "", bookingNote: "", notes: "", classes: [] } };
+      state.modal = { type: "gym", gym: { name: "", region: "east", color: "#f4a261", whatsapp: "", whatsappLabel: "预约", bookingUrl: "", bookingNote: "", notes: "", classes: [] } };
       render();
     });
     action("export", exportJson);

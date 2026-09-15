@@ -1,4 +1,4 @@
-const CACHE = "af-classes-v3";
+const CACHE = "af-classes-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,7 +6,11 @@ const ASSETS = [
   "./app.js",
   "./data/schedules.js",
   "./manifest.json",
-  "./favicon.svg"
+  "./img/lulu-sit.jpg",
+  "./img/lulu-wave.jpg",
+  "./img/lulu-peek.jpg",
+  "./img/lulu-avatar.jpg",
+  "./img/apple-touch-icon.jpg"
 ];
 
 self.addEventListener("install", (event) => {

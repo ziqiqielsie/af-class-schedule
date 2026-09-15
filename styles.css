@@ -98,7 +98,7 @@ button {
   z-index: 1;
   max-width: 980px;
   margin: 0 auto;
-  padding: 16px 16px 72px;
+  padding: 16px 16px 120px;
 }
 
 .topbar {
@@ -113,6 +113,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+  flex: 1;
 }
 
 .logo {
@@ -126,8 +128,8 @@ button {
 }
 
 .logo-mark {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 16px;
   background: #fff3d9;
   border: 2px solid rgba(232, 137, 58, 0.25);
@@ -135,11 +137,40 @@ button {
   place-items: center;
   overflow: hidden;
   box-shadow: 0 6px 14px rgba(232, 137, 58, 0.18);
+  flex-shrink: 0;
 }
 
-.logo-mark .lulu-svg {
-  width: 40px;
-  height: 40px;
+.logo-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 8%;
+}
+
+.lulu-wave {
+  width: 92px;
+  height: 112px;
+  object-fit: cover;
+  object-position: 50% 8%;
+  border-radius: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 12px 24px rgba(184, 122, 62, 0.22);
+  flex-shrink: 0;
+  background: #ffe7b8;
+}
+
+.lulu-peek-deco {
+  position: fixed;
+  left: calc(50% - 560px);
+  bottom: 0;
+  width: 118px;
+  height: 148px;
+  object-fit: cover;
+  object-position: 18% 58%;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 8px 24px rgba(92, 61, 46, 0.16);
 }
 
 h1 {
@@ -431,12 +462,22 @@ button.wa-link {
   color: var(--muted);
 }
 
-.empty .lulu-svg {
-  width: 92px;
-  height: 108px;
-  margin: 0 auto 8px;
+.empty .lulu-empty-img {
+  width: min(260px, 82%);
+  height: 200px;
+  object-fit: cover;
+  border-radius: 22px;
+  margin: 0 auto 12px;
   display: block;
-  animation: lulu-bob 2.8s ease-in-out infinite;
+  box-shadow: 0 12px 24px rgba(184, 122, 62, 0.18);
+}
+
+.empty .lulu-empty-img.peek {
+  object-position: 42% 46%;
+}
+
+.empty .lulu-empty-img.sit {
+  object-position: 50% 10%;
 }
 
 .empty.card::before {
@@ -606,7 +647,7 @@ button.wa-link {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .empty .lulu-svg {
+  .empty .lulu-empty-img {
     animation: none;
   }
 }
@@ -640,6 +681,16 @@ button.wa-link {
 
   h1 {
     font-size: 24px;
+  }
+
+  .lulu-wave {
+    width: 68px;
+    height: 84px;
+    border-radius: 18px;
+  }
+
+  .lulu-peek-deco {
+    display: none;
   }
 
   .gym-manage-head {

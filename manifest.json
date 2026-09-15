@@ -8,9 +8,9 @@
   "lang": "zh-Hans",
   "icons": [
     {
-      "src": "./favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "./img/apple-touch-icon.jpg",
+      "sizes": "360x360",
+      "type": "image/jpeg",
       "purpose": "any"
     }
   ]

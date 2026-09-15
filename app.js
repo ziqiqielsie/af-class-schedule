@@ -406,56 +406,20 @@
       ${state.view === "manage" ? renderManage() : renderBrowse()}
       ${state.modal ? renderModal() : ""}
       ${state.toast ? `<div class="toast">${escapeHtml(state.toast)}</div>` : ""}
+      <img class="lulu-peek-deco" src="./img/lulu-peek.jpg" alt="">
       <input class="hidden-file" id="import-file" type="file" accept="application/json" />
     `;
     bind();
   }
 
-  function luluSvg(kind = "mark") {
-    const steam = kind === "empty"
-      ? `<g class="steam" aria-hidden="true">
-          <path d="M28 18c0-6 6-6 6-12"/>
-          <path d="M40 16c0-7 7-7 7-14"/>
-          <path d="M54 18c0-6 6-6 6-12"/>
-        </g>`
-      : "";
-    const viewBox = kind === "mark" ? "20 10 80 92" : "0 0 120 140";
+  function emptyHtml(message, pose = "peek") {
+    const src = pose === "sit" ? "./img/lulu-sit.jpg" : "./img/lulu-peek.jpg";
     return `
-      <svg class="lulu-svg" viewBox="${viewBox}" role="img" aria-label="水豚噜噜">
-        ${steam}
-        <ellipse cx="60" cy="28" rx="22" ry="15" fill="#F4A261"/>
-        <ellipse cx="60" cy="25" rx="16" ry="10" fill="#E8893A"/>
-        <path d="M76 14c6 2 9 8 7 13-5-2-10-6-11-10z" fill="#7CB518"/>
-        <ellipse cx="36" cy="52" rx="10" ry="13" fill="#E8C48A"/>
-        <ellipse cx="84" cy="52" rx="10" ry="13" fill="#E8C48A"/>
-        <ellipse cx="36" cy="53" rx="5" ry="7" fill="#F5D7A8"/>
-        <ellipse cx="84" cy="53" rx="5" ry="7" fill="#F5D7A8"/>
-        <ellipse cx="60" cy="86" rx="42" ry="36" fill="#F0C989"/>
-        <ellipse cx="60" cy="98" rx="26" ry="22" fill="#F8E4B8"/>
-        <ellipse cx="24" cy="94" rx="11" ry="8" fill="#E8C48A"/>
-        <ellipse cx="96" cy="94" rx="11" ry="8" fill="#E8C48A"/>
-        <ellipse cx="44" cy="124" rx="13" ry="7" fill="#E8B86A"/>
-        <ellipse cx="76" cy="124" rx="13" ry="7" fill="#E8B86A"/>
-        <ellipse cx="32" cy="88" rx="8" ry="5" fill="#F4A7B9" opacity=".75"/>
-        <ellipse cx="88" cy="88" rx="8" ry="5" fill="#F4A7B9" opacity=".75"/>
-        <circle cx="44" cy="74" r="8.5" fill="#fff"/>
-        <circle cx="76" cy="74" r="8.5" fill="#fff"/>
-        <circle cx="45" cy="75" r="4.8" fill="#3D2914"/>
-        <circle cx="75" cy="75" r="4.8" fill="#3D2914"/>
-        <circle cx="47" cy="73" r="1.7" fill="#fff"/>
-        <circle cx="77" cy="73" r="1.7" fill="#fff"/>
-        <ellipse cx="60" cy="90" rx="14" ry="10" fill="#E8A66A"/>
-        <circle cx="55" cy="89" r="1.6" fill="#5C3D2E"/>
-        <circle cx="65" cy="89" r="1.6" fill="#5C3D2E"/>
-        <path d="M52 98c4.6 5 11.4 5 16 0" fill="none" stroke="#5C3D2E" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M56 98h3v3c0 1.2-.8 2-2 2h-1z" fill="#fff"/>
-        <path d="M61 98h3v3c0 1.2-.8 2-2 2h-1z" fill="#fff"/>
-      </svg>
+      <div class="empty card">
+        <img class="lulu-empty-img ${pose}" src="${src}" alt="水豚噜噜">
+        <p>${escapeHtml(message)}</p>
+      </div>
     `;
-  }
-
-  function emptyHtml(message) {
-    return `<div class="empty card">${luluSvg("empty")}<p>${escapeHtml(message)}</p></div>`;
   }
 
   function renderHeader() {
@@ -463,10 +427,14 @@
     return `
       <header class="topbar">
         <div class="brand">
-          <div class="logo"><span class="logo-mark">${luluSvg("mark")}</span> 噜噜课表</div>
+          <div class="logo">
+            <span class="logo-mark"><img src="./img/lulu-sit.jpg" alt=""></span>
+            噜噜课表
+          </div>
           <h1>团课课表</h1>
           <div class="subtitle">今天是${today} · 新加坡时间 · ${state.data.gyms.length} 家门店 · 噜噜陪你上课</div>
         </div>
+        <img class="lulu-wave" src="./img/lulu-wave.jpg" alt="水豚噜噜">
         <div class="top-actions">
           <button class="btn ${state.view === "manage" ? "primary" : ""}" data-action="toggle-manage">
             ${state.view === "manage" ? "完成" : "编辑课表"}
@@ -563,7 +531,7 @@
     const selected = state.gymId && gyms.some((gym) => gym.id === state.gymId) ? state.gymId : gyms[0]?.id;
     state.gymId = selected || null;
     const gym = gymById(state.gymId);
-    if (!gym) return emptyHtml("还没有门店。去「编辑课表」添加一家吧。");
+    if (!gym) return emptyHtml("还没有门店。去「编辑课表」添加一家吧。", "sit");
     return `
       <div class="chip-row">
         ${gyms.map((item) => `
@@ -604,7 +572,7 @@
       </div>
       <p class="hint">改动会保存在这台设备的浏览器里。想长期保留或换手机用，请先导出 JSON；也可以把导出内容贴进 <code>data/schedules.js</code> 作为新的默认课表。</p>
       ${isDirty() ? `<div class="meta-row"><span class="pill">已有本地修改，尚未写回默认文件</span></div>` : ""}
-      ${state.data.gyms.map(renderGymManage).join("") || emptyHtml("还没有门店。")}
+      ${state.data.gyms.map(renderGymManage).join("") || emptyHtml("还没有门店。", "sit")};
     `;
   }
 

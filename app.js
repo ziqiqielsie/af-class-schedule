@@ -81,6 +81,10 @@
   }
 
   function mergeSeedBooking(data) {
+    const existingIds = new Set(data.gyms.map((gym) => gym.id));
+    for (const seeded of seed.gyms) {
+      if (!existingIds.has(seeded.id)) data.gyms.push(structuredClone(seeded));
+    }
     const fromSeed = new Map(seed.gyms.map((gym) => [gym.id, gym]));
     for (const gym of data.gyms) {
       const seeded = fromSeed.get(gym.id);
@@ -136,12 +140,12 @@
 
   function classKind(name) {
     const n = String(name || "").toLowerCase();
-    if (/yoga|yin|stretch|pilates|mobility|myofascial|meditat|sound|yogalate/.test(n)) return "mind";
+    if (/yoga|yin|stretch|pilates|mobility|myofascial|meditat|sound|yogalate|release/.test(n)) return "mind";
     if (/combat|boxing|kickbox|muay|bodycombat/.test(n)) return "combat";
-    if (/pump|strength|bar |core|hyrox/.test(n)) return "strength";
+    if (/pump|strength|bar |core|hyrox|power|abt/.test(n)) return "strength";
     if (/zumba|dance|kpop|choreography|bounce/.test(n)) return "dance";
     if (/cycl/.test(n)) return "cycle";
-    if (/hiit|cardio|circuit|functional|attack|run/.test(n)) return "cardio";
+    if (/hiit|cardio|circuit|functional|attack|run|hybrid/.test(n)) return "cardio";
     return "other";
   }
 

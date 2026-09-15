@@ -10,8 +10,9 @@ window.AF_SEED = {
       region: "east",
       color: "#8b5cf6",
       whatsapp: "92760599",
-      whatsappLabel: "预约",
-      bookingNote: "WhatsApp 报名：姓名 + 课程和日期 → 9276 0599",
+      whatsappLabel: "WhatsApp",
+      bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78711&uid=0&id_class_tab=1",
+      bookingNote: "线上预约 WellnessLiving。也可 WhatsApp 9276 0599。",
       notes: "",
       classes: [
         { id: "mb-mon-1900-boxing", day: "mon", name: "Boxing Cardio / Conditioning / HIIT", start: "19:00", end: "20:00" },
@@ -25,6 +26,56 @@ window.AF_SEED = {
         { id: "mb-sat-1330-hiit", day: "sat", name: "HIIT", start: "13:30", end: "14:30" },
         { id: "mb-sun-1000-yoga", day: "sun", name: "Yoga", start: "10:00", end: "11:00" },
         { id: "mb-sun-1200-hyrox", day: "sun", name: "HYROX", start: "12:00", end: "13:00" }
+      ]
+    },
+    {
+      id: "depot-heights",
+      name: "Depot Heights",
+      region: "south",
+      color: "#22c55e",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78649&uid=0&id_class_tab=1",
+      bookingNote: "线上预约 WellnessLiving",
+      notes: "",
+      classes: [
+        { id: "dh-mon-1145-abt", day: "mon", name: "Strength/ABT", start: "11:45", end: "12:30", instructor: "Alvelyn" },
+        { id: "dh-mon-1230-yoga", day: "mon", name: "Yoga", start: "12:30", end: "13:15", instructor: "Alvelyn" },
+        { id: "dh-tue-1830-yoga", day: "tue", name: "Yoga", start: "18:30", end: "19:15", instructor: "Alvelyn" },
+        { id: "dh-tue-1915-cardio", day: "tue", name: "Cardio", start: "19:15", end: "20:00", instructor: "Alvelyn" },
+        { id: "dh-tue-2000-stretch", day: "tue", name: "Deep Stretch", start: "20:00", end: "20:45", instructor: "Alvelyn" },
+        { id: "dh-wed-1130-power", day: "wed", name: "Power", start: "11:30", end: "12:30", instructor: "Amirul" },
+        { id: "dh-wed-1930-zumba", day: "wed", name: "Zumba", start: "19:30", end: "20:30", instructor: "Su Yi" },
+        { id: "dh-thu-1830-cardio", day: "thu", name: "Cardio", start: "18:30", end: "19:15", instructor: "Alvelyn" },
+        { id: "dh-thu-1915-abt", day: "thu", name: "Strength/ABT", start: "19:15", end: "20:00", instructor: "Alvelyn" },
+        { id: "dh-thu-2000-myo", day: "thu", name: "Myofascial Ball Release", start: "20:00", end: "20:45", instructor: "Alvelyn" },
+        { id: "dh-fri-1930-kickboxing", day: "fri", name: "Kickboxing", start: "19:30", end: "20:30", instructor: "Luqman" },
+        { id: "dh-sat-1100-hybrid", day: "sat", name: "Hybrid", start: "11:00", end: "12:00", instructor: "Alvelyn" },
+        { id: "dh-sat-1200-stretch", day: "sat", name: "Deep Stretch", start: "12:00", end: "13:00", instructor: "Alvelyn" }
+      ]
+    },
+    {
+      id: "city-hall",
+      name: "City Hall",
+      region: "central",
+      color: "#ec4899",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingUrl: "",
+      bookingNote: "课表海报上有 WhatsApp 二维码，可扫码报名。",
+      notes: "",
+      classes: [
+        { id: "ch-mon-1800-pilates", day: "mon", name: "Pilates", start: "18:00", end: "18:55" },
+        { id: "ch-mon-1905-pilates", day: "mon", name: "Pilates", start: "19:05", end: "20:00" },
+        { id: "ch-mon-2010-combat", day: "mon", name: "Body Combat", start: "20:10", end: "21:00" },
+        { id: "ch-tue-1200-hiit", day: "tue", name: "HIIT", start: "12:00", end: "13:00" },
+        { id: "ch-tue-1900-combat", day: "tue", name: "Body Combat", start: "19:00", end: "20:00" },
+        { id: "ch-wed-1900-muay", day: "wed", name: "Muay Thai", start: "19:00", end: "20:00" },
+        { id: "ch-thu-1200-pilates", day: "thu", name: "Mobility Pilates", start: "12:00", end: "13:00" },
+        { id: "ch-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00" },
+        { id: "ch-fri-1200-release", day: "fri", name: "Release & Restore", start: "12:00", end: "13:00", note: "New" },
+        { id: "ch-fri-1900-zumba", day: "fri", name: "Zumba", start: "19:00", end: "20:00" },
+        { id: "ch-sat-1100-combat", day: "sat", name: "Body Combat", start: "11:00", end: "12:00" }
       ]
     },
     {

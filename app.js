@@ -407,16 +407,22 @@
       ${state.modal ? renderModal() : ""}
       ${state.toast ? `<div class="toast">${escapeHtml(state.toast)}</div>` : ""}
       <img class="lulu-peek-deco" src="./img/lulu-peek.jpg" alt="">
+      <img class="lulu-yoga-deco" src="./img/lulu-yoga.jpg" alt="">
       <input class="hidden-file" id="import-file" type="file" accept="application/json" />
     `;
     bind();
   }
 
-  function emptyHtml(message, pose = "peek") {
-    const src = pose === "sit" ? "./img/lulu-sit.jpg" : "./img/lulu-peek.jpg";
+  function emptyHtml(message, pose) {
+    const src = {
+      sit: "./img/lulu-sit.jpg",
+      yoga: "./img/lulu-yoga.jpg",
+      peek: "./img/lulu-peek.jpg"
+    }[pose || (state.kind === "mind" ? "yoga" : "peek")];
+    const cls = pose || (state.kind === "mind" ? "yoga" : "peek");
     return `
       <div class="empty card">
-        <img class="lulu-empty-img ${pose}" src="${src}" alt="水豚噜噜">
+        <img class="lulu-empty-img ${cls}" src="${src}" alt="水豚噜噜">
         <p>${escapeHtml(message)}</p>
       </div>
     `;

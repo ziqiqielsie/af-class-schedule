@@ -1,4 +1,4 @@
-const CACHE = "af-classes-v5";
+const CACHE = "af-classes-v6";
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,10 +6,7 @@ const ASSETS = [
   "./app.js",
   "./data/schedules.js",
   "./manifest.json",
-  "./img/lulu-sit.jpg",
-  "./img/lulu-wave.jpg",
-  "./img/lulu-peek.jpg",
-  "./img/lulu-yoga.jpg",
+  "./img/lulu-sheet.jpg",
   "./img/lulu-avatar.jpg",
   "./img/apple-touch-icon.jpg"
 ];

@@ -22,13 +22,13 @@
   };
   const REGIONS = { east: "东部", west: "西部", central: "中部", south: "南部" };
   const KINDS = [
-    { id: "all", label: "全部" },
-    { id: "mind", label: "瑜伽拉伸" },
-    { id: "combat", label: "搏击" },
-    { id: "strength", label: "力量" },
-    { id: "cardio", label: "有氧" },
-    { id: "dance", label: "舞蹈" },
-    { id: "cycle", label: "单车" }
+    { id: "all", label: "全部", sticker: "wave" },
+    { id: "mind", label: "瑜伽拉伸", sticker: "stretch" },
+    { id: "combat", label: "搏击", sticker: "lift" },
+    { id: "strength", label: "力量", sticker: "kettle" },
+    { id: "cardio", label: "有氧", sticker: "run" },
+    { id: "dance", label: "舞蹈", sticker: "music" },
+    { id: "cycle", label: "单车", sticker: "hydrate" }
   ];
 
   const appEl = document.getElementById("app");
@@ -406,23 +406,24 @@
       ${state.view === "manage" ? renderManage() : renderBrowse()}
       ${state.modal ? renderModal() : ""}
       ${state.toast ? `<div class="toast">${escapeHtml(state.toast)}</div>` : ""}
-      <img class="lulu-peek-deco" src="./img/lulu-peek.jpg" alt="">
-      <img class="lulu-yoga-deco" src="./img/lulu-yoga.jpg" alt="">
       <input class="hidden-file" id="import-file" type="file" accept="application/json" />
     `;
     bind();
   }
 
+  function stickerSrc(name) {
+    return `./img/stickers/${name}.jpg`;
+  }
+
+  function kindSticker(kind) {
+    return KINDS.find((item) => item.id === kind)?.sticker || "wink";
+  }
+
   function emptyHtml(message, pose) {
-    const src = {
-      sit: "./img/lulu-sit.jpg",
-      yoga: "./img/lulu-yoga.jpg",
-      peek: "./img/lulu-peek.jpg"
-    }[pose || (state.kind === "mind" ? "yoga" : "peek")];
-    const cls = pose || (state.kind === "mind" ? "yoga" : "peek");
+    const sticker = pose === "sit" ? "wink" : "bath";
     return `
       <div class="empty card">
-        <img class="lulu-empty-img ${cls}" src="${src}" alt="水豚噜噜">
+        <img class="lulu-empty-img" src="${stickerSrc(sticker)}" alt="水豚噜噜">
         <p>${escapeHtml(message)}</p>
       </div>
     `;
@@ -431,20 +432,22 @@
   function renderHeader() {
     const today = dayFull(todayId());
     return `
-      <header class="topbar">
-        <div class="brand">
-          <div class="logo">
-            <span class="logo-mark"><img src="./img/lulu-sit.jpg" alt=""></span>
-            噜噜课表
+      <header class="hero">
+        <img class="lulu-hero" src="./img/lulu-sheet.jpg" alt="Gym Time 噜噜贴纸">
+        <div class="hero-copy">
+          <div class="hero-top">
+            <div class="logo">
+              <span class="logo-mark"><img src="${stickerSrc("wave")}" alt=""></span>
+              噜噜课表
+            </div>
+            <div class="top-actions">
+              <button class="btn ${state.view === "manage" ? "primary" : ""}" data-action="toggle-manage">
+                ${state.view === "manage" ? "完成" : "编辑课表"}
+              </button>
+            </div>
           </div>
           <h1>团课课表</h1>
-          <div class="subtitle">今天是${today} · 新加坡时间 · ${state.data.gyms.length} 家门店 · 噜噜陪你上课</div>
-        </div>
-        <img class="lulu-wave" src="./img/lulu-wave.jpg" alt="水豚噜噜">
-        <div class="top-actions">
-          <button class="btn ${state.view === "manage" ? "primary" : ""}" data-action="toggle-manage">
-            ${state.view === "manage" ? "完成" : "编辑课表"}
-          </button>
+          <div class="subtitle">Gym Time · 今天是${today} · 新加坡时间 · ${state.data.gyms.length} 家门店</div>
         </div>
       </header>
     `;
@@ -480,8 +483,11 @@
   }
 
   function renderKindChips() {
-    return `<div class="chip-row">${KINDS.map((kind) => `
-      <button class="chip ${state.kind === kind.id ? "active" : ""}" data-kind="${kind.id}">${kind.label}</button>
+    return `<div class="chip-row kind-row">${KINDS.map((kind) => `
+      <button class="chip ${state.kind === kind.id ? "active" : ""}" data-kind="${kind.id}">
+        <img src="${stickerSrc(kind.sticker)}" alt="">
+        ${kind.label}
+      </button>
     `).join("")}</div>`;
   }
 
@@ -511,6 +517,7 @@
 
   function renderClassCard({ gym, item }) {
     const status = timedStatus(item);
+    const kind = classKind(item.name);
     const statusHtml = status === "live" ? `<div class="live">进行中</div>` : status === "soon" ? `<div class="soon">即将开始</div>` : "";
     return `
       <article class="card class-card" style="--gym-color:${gym.color}">
@@ -527,7 +534,10 @@
             <button type="button" class="wa-link" data-cal-class="${escapeHtml(gym.id)}::${escapeHtml(item.id)}">加入日历</button>
           </div>
         </div>
-        <div class="kind">${escapeHtml(kindLabel(classKind(item.name)))}</div>
+        <div class="kind">
+          <img src="${stickerSrc(kindSticker(kind))}" alt="">
+          <span>${escapeHtml(kindLabel(kind))}</span>
+        </div>
       </article>
     `;
   }

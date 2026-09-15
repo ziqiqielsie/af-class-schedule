@@ -101,6 +101,43 @@ button {
   padding: 16px 16px 48px;
 }
 
+.hero {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  padding: 0;
+  background: #111;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px 16px 16px;
+  background: rgba(255, 251, 244, 0.96);
+}
+
+.hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.lulu-hero {
+  width: 100%;
+  aspect-ratio: 1024 / 682;
+  object-fit: cover;
+  object-position: center;
+  background: #000;
+  display: block;
+}
+
 .topbar {
   display: flex;
   align-items: flex-start;
@@ -131,7 +168,7 @@ button {
   width: 48px;
   height: 48px;
   border-radius: 16px;
-  background: #fff3d9;
+  background: #111;
   border: 2px solid rgba(232, 137, 58, 0.25);
   display: grid;
   place-items: center;
@@ -144,7 +181,6 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 8%;
 }
 
 .lulu-wave {
@@ -171,18 +207,6 @@ button {
   z-index: 0;
   border-radius: 28px 28px 0 0;
   box-shadow: 0 8px 24px rgba(92, 61, 46, 0.16);
-}
-
-.lulu-yoga-deco {
-  display: block;
-  margin: 12px 4px 0 auto;
-  width: 148px;
-  height: 164px;
-  object-fit: cover;
-  object-position: 52% 58%;
-  border-radius: 24px;
-  box-shadow: 0 10px 24px rgba(92, 61, 46, 0.18);
-  background: #e8d4f0;
 }
 
 h1 {
@@ -303,13 +327,28 @@ h1 {
 
 .chip {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.72);
   color: var(--muted);
   border-radius: 999px;
-  padding: 8px 12px;
+  padding: 6px 12px 6px 6px;
   font-size: 13px;
   font-weight: 800;
+}
+
+.chip img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #111;
+}
+
+.kind-row .chip {
+  padding-right: 12px;
 }
 
 .chip.active {
@@ -430,14 +469,25 @@ h1 {
 .kind {
   justify-self: end;
   align-self: start;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
-  padding: 5px 8px;
-  border-radius: 999px;
-  background: rgba(244, 162, 97, 0.14);
   color: var(--accent);
   white-space: nowrap;
+  background: transparent;
+  padding: 0;
+}
+
+.kind img {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #111;
+  box-shadow: 0 8px 16px rgba(92, 61, 46, 0.16);
 }
 
 .wa-link {
@@ -475,25 +525,14 @@ button.wa-link {
 }
 
 .empty .lulu-empty-img {
-  width: min(260px, 82%);
-  height: 200px;
+  width: 148px;
+  height: 148px;
   object-fit: cover;
-  border-radius: 22px;
+  border-radius: 28px;
   margin: 0 auto 12px;
   display: block;
-  box-shadow: 0 12px 24px rgba(184, 122, 62, 0.18);
-}
-
-.empty .lulu-empty-img.peek {
-  object-position: 42% 46%;
-}
-
-.empty .lulu-empty-img.sit {
-  object-position: 50% 10%;
-}
-
-.empty .lulu-empty-img.yoga {
-  object-position: 50% 58%;
+  background: #111;
+  box-shadow: 0 12px 24px rgba(92, 61, 46, 0.18);
 }
 
 .empty.card::before {
@@ -688,31 +727,25 @@ button.wa-link {
 
 @media (max-width: 640px) {
   .class-card {
-    grid-template-columns: 78px 1fr;
-  }
-
-  .kind {
-    display: none;
+    grid-template-columns: 70px 1fr 52px;
   }
 
   h1 {
     font-size: 24px;
   }
 
-  .lulu-wave {
-    width: 68px;
-    height: 84px;
-    border-radius: 18px;
+  .lulu-hero {
+    min-height: 0;
+    height: auto;
   }
 
-  .lulu-peek-deco {
+  .kind span {
     display: none;
   }
 
-  .lulu-yoga-deco {
-    width: 112px;
-    height: 124px;
-    border-radius: 20px;
+  .kind img {
+    width: 48px;
+    height: 48px;
   }
 
   .gym-manage-head {

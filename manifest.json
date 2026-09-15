@@ -8,8 +8,8 @@
   "lang": "zh-Hans",
   "icons": [
     {
-      "src": "./img/apple-touch-icon.jpg",
-      "sizes": "360x360",
+      "src": "./img/stickers/wave.jpg",
+      "sizes": "197x217",
       "type": "image/jpeg",
       "purpose": "any"
     }

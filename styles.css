@@ -106,7 +106,7 @@ button {
   flex-direction: column;
   margin-bottom: 16px;
   padding: 0;
-  background: #111;
+  background: #fffaf3;
   border: 1px solid var(--line);
   border-radius: 28px;
   box-shadow: var(--shadow);
@@ -131,10 +131,10 @@ button {
 
 .lulu-hero {
   width: 100%;
-  aspect-ratio: 1024 / 682;
+  aspect-ratio: 1024 / 674;
   object-fit: cover;
   object-position: center;
-  background: #000;
+  background: #fff;
   display: block;
 }
 
@@ -168,7 +168,7 @@ button {
   width: 48px;
   height: 48px;
   border-radius: 16px;
-  background: #111;
+  background: #fff;
   border: 2px solid rgba(232, 137, 58, 0.25);
   display: grid;
   place-items: center;
@@ -180,7 +180,7 @@ button {
 .logo-mark img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .lulu-wave {
@@ -344,7 +344,7 @@ h1 {
   height: 28px;
   border-radius: 50%;
   object-fit: cover;
-  background: #111;
+  background: transparent;
 }
 
 .kind-row .chip {
@@ -485,8 +485,8 @@ h1 {
   width: 56px;
   height: 56px;
   border-radius: 16px;
-  object-fit: cover;
-  background: #111;
+  object-fit: contain;
+  background: #fff;
   box-shadow: 0 8px 16px rgba(92, 61, 46, 0.16);
 }
 
@@ -527,11 +527,11 @@ button.wa-link {
 .empty .lulu-empty-img {
   width: 148px;
   height: 148px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 28px;
   margin: 0 auto 12px;
   display: block;
-  background: #111;
+  background: #fff;
   box-shadow: 0 12px 24px rgba(92, 61, 46, 0.18);
 }
 

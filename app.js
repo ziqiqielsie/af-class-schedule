@@ -2,14 +2,15 @@
   const STORAGE_KEY = "af-class-schedule-v1";
   const TZ = "Asia/Singapore";
   const DAYS = [
-    { id: "mon", label: "一", full: "周一", js: 1 },
-    { id: "tue", label: "二", full: "周二", js: 2 },
-    { id: "wed", label: "三", full: "周三", js: 3 },
-    { id: "thu", label: "四", full: "周四", js: 4 },
-    { id: "fri", label: "五", full: "周五", js: 5 },
-    { id: "sat", label: "六", full: "周六", js: 6 },
-    { id: "sun", label: "日", full: "周日", js: 0 }
+    { id: "mon", label: "一", full: "周一", js: 1, rrule: "MO" },
+    { id: "tue", label: "二", full: "周二", js: 2, rrule: "TU" },
+    { id: "wed", label: "三", full: "周三", js: 3, rrule: "WE" },
+    { id: "thu", label: "四", full: "周四", js: 4, rrule: "TH" },
+    { id: "fri", label: "五", full: "周五", js: 5, rrule: "FR" },
+    { id: "sat", label: "六", full: "周六", js: 6, rrule: "SA" },
+    { id: "sun", label: "日", full: "周日", js: 0, rrule: "SU" }
   ];
+  const CALENDAR_NAME = "Class Timetable";
   const DAY_ALIAS = {
     mon: "mon", monday: "mon", "周一": "mon", "星期一": "mon", "一": "mon",
     tue: "tue", tues: "tue", tuesday: "tue", "周二": "tue", "星期二": "tue", "二": "tue",
@@ -234,6 +235,165 @@
     return parts.join("");
   }
 
+  function singaporeYmd(date = new Date()) {
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: TZ,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).format(date);
+  }
+
+  function addDaysYmd(ymd, days) {
+    const [year, month, day] = ymd.split("-").map(Number);
+    const utc = new Date(Date.UTC(year, month - 1, day));
+    utc.setUTCDate(utc.getUTCDate() + days);
+    return utc.toISOString().slice(0, 10);
+  }
+
+  function nextYmdForDay(dayId) {
+    const today = singaporeYmd();
+    const todayJs = DAYS.find((day) => day.id === todayId())?.js ?? 1;
+    const want = DAYS.find((day) => day.id === dayId)?.js ?? 1;
+    return addDaysYmd(today, (want - todayJs + 7) % 7);
+  }
+
+  function compactStamp(ymd, hhmm) {
+    return `${ymd.replace(/-/g, "")}T${String(hhmm).replace(":", "")}00`;
+  }
+
+  function eventTitle(gym, item) {
+    return `${item.name} · ${gym.name}`;
+  }
+
+  function eventLocation(gym) {
+    return `Anytime Fitness ${gym.name}`;
+  }
+
+  function eventDetails(gym, item) {
+    return [
+      item.instructor ? `教练：${item.instructor}` : "",
+      item.note ? item.note : "",
+      gym.bookingNote || "",
+      `每周${dayFull(item.day)} ${item.start}–${item.end}`
+    ].filter(Boolean).join("\n");
+  }
+
+  function googleCalUrl(gym, item) {
+    const ymd = nextYmdForDay(item.day);
+    const rrule = DAYS.find((day) => day.id === item.day)?.rrule || "MO";
+    const params = new URLSearchParams({
+      text: eventTitle(gym, item),
+      dates: `${compactStamp(ymd, item.start)}/${compactStamp(ymd, item.end)}`,
+      ctz: TZ,
+      location: eventLocation(gym),
+      details: eventDetails(gym, item),
+      recur: `RRULE:FREQ=WEEKLY;BYDAY=${rrule}`
+    });
+    return `https://calendar.google.com/calendar/u/0/r/eventedit?${params.toString()}`;
+  }
+
+  function icsEscape(value) {
+    return String(value || "")
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,")
+      .replace(/\r?\n/g, "\\n");
+  }
+
+  function icsFold(line) {
+    let rest = line;
+    const lines = [];
+    while (rest.length > 73) {
+      lines.push(rest.slice(0, 73));
+      rest = ` ${rest.slice(73)}`;
+    }
+    lines.push(rest);
+    return lines.join("\r\n");
+  }
+
+  function icsStamp(date = new Date()) {
+    return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+  }
+
+  function veventFor(gym, item) {
+    const ymd = nextYmdForDay(item.day);
+    const rrule = DAYS.find((day) => day.id === item.day)?.rrule || "MO";
+    return [
+      "BEGIN:VEVENT",
+      `UID:af-${gym.id}-${item.id}@ziqiqielsie.github.io`,
+      `DTSTAMP:${icsStamp()}`,
+      `DTSTART;TZID=Asia/Singapore:${compactStamp(ymd, item.start)}`,
+      `DTEND;TZID=Asia/Singapore:${compactStamp(ymd, item.end)}`,
+      `RRULE:FREQ=WEEKLY;BYDAY=${rrule}`,
+      icsFold(`SUMMARY:${icsEscape(eventTitle(gym, item))}`),
+      icsFold(`LOCATION:${icsEscape(eventLocation(gym))}`),
+      icsFold(`DESCRIPTION:${icsEscape(eventDetails(gym, item))}`),
+      "END:VEVENT"
+    ].join("\r\n");
+  }
+
+  function buildIcs(rows) {
+    return [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//AF Class Schedule//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+      `X-WR-CALNAME:${CALENDAR_NAME}`,
+      "X-WR-TIMEZONE:Asia/Singapore",
+      "BEGIN:VTIMEZONE",
+      "TZID:Asia/Singapore",
+      "TZURL:http://tzurl.org/zoneinfo-outlook/Asia/Singapore",
+      "X-LIC-LOCATION:Asia/Singapore",
+      "BEGIN:STANDARD",
+      "TZOFFSETFROM:+0800",
+      "TZOFFSETTO:+0800",
+      "TZNAME:+08",
+      "DTSTART:19700101T000000",
+      "END:STANDARD",
+      "END:VTIMEZONE",
+      ...rows.map(({ gym, item }) => veventFor(gym, item)),
+      "END:VCALENDAR",
+      ""
+    ].join("\r\n");
+  }
+
+  function downloadIcs(filename, body) {
+    const blob = new Blob([body], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  }
+
+  function addToClassTimetable(rows) {
+    if (!rows.length) {
+      toast("没有可添加的课");
+      return;
+    }
+    if (rows.length === 1) {
+      window.open(googleCalUrl(rows[0].gym, rows[0].item), "_blank", "noopener");
+      toast("保存前把日历选成 Class Timetable");
+      return;
+    }
+    downloadIcs(`${CALENDAR_NAME}.ics`, buildIcs(rows));
+    window.open("https://calendar.google.com/calendar/u/0/r/settings/export", "_blank", "noopener");
+    toast("请导入刚下载的文件，日历选 Class Timetable");
+  }
+
+  function gymClassRows(gym) {
+    if (!gym) return [];
+    return [...(gym.classes || [])]
+      .filter((item) => matchesQuery(gym, item) && matchesKind(item))
+      .sort((a, b) => DAYS.findIndex((day) => day.id === a.day) - DAYS.findIndex((day) => day.id === b.day) || toMinutes(a.start) - toMinutes(b.start))
+      .map((item) => ({ gym, item }));
+  }
+
   function render() {
     appEl.innerHTML = `
       ${renderHeader()}
@@ -312,7 +472,10 @@
       </div>
       <div class="meta-row">
         <span>${dayFull(state.day)} · ${rows.length} 节课</span>
-        ${isDirty() ? `<span class="pill">已有本地修改</span>` : `<span></span>`}
+        <span class="meta-actions">
+          ${isDirty() ? `<span class="pill">已有本地修改</span>` : ""}
+          ${rows.length ? `<button type="button" class="btn" data-cal-day>加入 Class Timetable</button>` : ""}
+        </span>
       </div>
       <div class="list">
         ${rows.length ? rows.map(renderClassCard).join("") : `<div class="empty card">这天没有符合筛选的团课。</div>`}
@@ -333,7 +496,10 @@
             ${item.instructor ? ` · ${escapeHtml(item.instructor)}` : ""}
             ${item.note ? ` · ${escapeHtml(item.note)}` : ""}
           </div>
-          ${bookLinksHtml(gym, item)}
+          <div class="card-actions">
+            ${bookLinksHtml(gym, item)}
+            <button type="button" class="wa-link" data-cal-class="${escapeHtml(gym.id)}::${escapeHtml(item.id)}">加入日历</button>
+          </div>
         </div>
         <div class="kind">${escapeHtml(kindLabel(classKind(item.name)))}</div>
       </article>
@@ -357,7 +523,10 @@
           <h2 style="margin:0">${escapeHtml(gym.name)}</h2>
           <div class="subtitle">${REGIONS[gym.region] || ""} · ${(gym.classes || []).length} 节课${gym.bookingNote ? ` · ${escapeHtml(gym.bookingNote)}` : ""}</div>
         </div>
-        <div class="mini-actions">${bookLinksHtml(gym, null, "button")}</div>
+        <div class="mini-actions">
+          ${bookLinksHtml(gym, null, "button")}
+          <button type="button" class="btn" data-cal-gym="${escapeHtml(gym.id)}">整周加入日历</button>
+        </div>
       </div>
       ${gym.notes ? `<p class="hint">${escapeHtml(gym.notes)}</p>` : ""}
       ${DAYS.map((day) => {
@@ -569,6 +738,22 @@
         render();
       });
     });
+    appEl.querySelectorAll("[data-cal-class]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const [gymId, classId] = btn.dataset.calClass.split("::");
+        const gym = gymById(gymId);
+        const item = gym?.classes?.find((cls) => cls.id === classId);
+        if (gym && item) addToClassTimetable([{ gym, item }]);
+      });
+    });
+    const calDay = appEl.querySelector("[data-cal-day]");
+    if (calDay) {
+      calDay.addEventListener("click", () => addToClassTimetable(allClassesForDay(state.day)));
+    }
+    const calGym = appEl.querySelector("[data-cal-gym]");
+    if (calGym) {
+      calGym.addEventListener("click", () => addToClassTimetable(gymClassRows(gymById(calGym.dataset.calGym))));
+    }
     bindManage();
     bindModal();
   }

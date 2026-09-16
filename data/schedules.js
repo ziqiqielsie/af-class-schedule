@@ -229,6 +229,24 @@ window.AF_SEED = {
         { id: "cs-thu-1845-pilates", day: "thu", name: "Pilates", start: "18:45", end: "19:45" },
         { id: "cs-fri-1215-yoga", day: "fri", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels · 原图有遮挡" }
       ]
+    },
+    {
+      id: "tanjong-pagar",
+      name: "Tanjong Pagar",
+      region: "central",
+      color: "#d9488c",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingUrl: "",
+      bookingNote: "课表海报报名。",
+      notes: "",
+      classes: [
+        { id: "tp-mon-1930-muay", day: "mon", name: "Muay Thai", start: "19:30", end: "20:30" },
+        { id: "tp-wed-1200-pilates", day: "wed", name: "Pilates", start: "12:00", end: "13:00" },
+        { id: "tp-wed-1900-hiit", day: "wed", name: "HIIT", start: "19:00", end: "20:00" },
+        { id: "tp-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00" },
+        { id: "tp-fri-1900-kickboxing", day: "fri", name: "Kick Boxing", start: "19:00", end: "20:00" }
+      ]
     }
   ]
 };

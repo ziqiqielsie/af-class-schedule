@@ -23,7 +23,8 @@
   const REGIONS = { east: "东部", west: "西部", central: "中部", south: "南部" };
   const KINDS = [
     { id: "all", label: "全部", sticker: "wave" },
-    { id: "mind", label: "瑜伽拉伸", sticker: "stretch" },
+    { id: "yoga", label: "瑜伽拉伸", sticker: "stretch" },
+    { id: "pilates", label: "普拉提", sticker: "pilates" },
     { id: "combat", label: "搏击", sticker: "lift" },
     { id: "strength", label: "力量", sticker: "kettle" },
     { id: "cardio", label: "有氧", sticker: "run" },
@@ -141,7 +142,8 @@
 
   function classKind(name) {
     const n = String(name || "").toLowerCase();
-    if (/yoga|yin|stretch|pilates|mobility|myofascial|meditat|sound|yogalate|release/.test(n)) return "mind";
+    if (/pilates/.test(n)) return "pilates";
+    if (/yoga|yin|stretch|mobility|myofascial|meditat|sound|yogalate|release/.test(n)) return "yoga";
     if (/combat|boxing|kickbox|muay|bodycombat/.test(n)) return "combat";
     if (/pump|strength|bar |core|hyrox|power|abt/.test(n)) return "strength";
     if (/zumba|dance|kpop|choreography|bounce/.test(n)) return "dance";

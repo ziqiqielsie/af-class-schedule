@@ -20,7 +20,7 @@
     sat: "sat", saturday: "sat", "周六": "sat", "星期六": "sat", "六": "sat",
     sun: "sun", sunday: "sun", "周日": "sun", "星期日": "sun", "日": "sun", "天": "sun"
   };
-  const REGIONS = { east: "东部", west: "西部", central: "中部", south: "南部" };
+  const REGIONS = { east: "东部", west: "西部", central: "中部", south: "南部", north: "北部" };
   const KINDS = [
     { id: "all", label: "全部", sticker: "wave" },
     { id: "yoga", label: "瑜伽拉伸", sticker: "stretch" },
@@ -153,10 +153,10 @@
     if (/pilates/.test(n)) return "pilates";
     if (/yoga|yin|stretch|mobility|myofascial|meditat|sound|yogalate|release/.test(n)) return "yoga";
     if (/combat|boxing|kickbox|muay|bodycombat/.test(n)) return "combat";
-    if (/pump|strength|bar |core|hyrox|power|abt/.test(n)) return "strength";
+    if (/pump|strength|bar |core|hyrox|power|abt|abs|kettle/.test(n)) return "strength";
     if (/zumba|dance|kpop|choreography|bounce/.test(n)) return "dance";
-    if (/cycl/.test(n)) return "cycle";
-    if (/hiit|cardio|circuit|functional|attack|run|hybrid/.test(n)) return "cardio";
+    if (/cycl|spin/.test(n)) return "cycle";
+    if (/hiit|cardio|circuit|functional|attack|run|hybrid|fundamental/.test(n)) return "cardio";
     return "other";
   }
 

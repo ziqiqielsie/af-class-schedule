@@ -247,6 +247,24 @@ window.AF_SEED = {
         { id: "tp-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00" },
         { id: "tp-fri-1900-kickboxing", day: "fri", name: "Kick Boxing", start: "19:00", end: "20:00" }
       ]
+    },
+    {
+      id: "bukit-merah",
+      name: "Bukit Merah",
+      region: "south",
+      color: "#8b6cc9",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingUrl: "",
+      bookingNote: "全体 AF 会员免费，先到先得。",
+      notes: "",
+      classes: [
+        { id: "bm-mon-1900-circuit", day: "mon", name: "Metabolic Circuit", start: "19:00", end: "20:00" },
+        { id: "bm-tue-1900-hiit", day: "tue", name: "HIIT", start: "19:00", end: "20:00" },
+        { id: "bm-wed-1900-zumba", day: "wed", name: "Zumba / BollyBeats", start: "19:00", end: "20:00" },
+        { id: "bm-thu-1900-muay", day: "thu", name: "Muay Thai", start: "19:00", end: "20:00" },
+        { id: "bm-fri-1900-yoga", day: "fri", name: "Hatha Yoga", start: "19:00", end: "20:00" }
+      ]
     }
   ]
 };

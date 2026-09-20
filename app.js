@@ -96,10 +96,13 @@
         gym.bookingNote = seeded.bookingNote;
         if (seeded.whatsappLabel) gym.whatsappLabel = seeded.whatsappLabel;
       }
-      if (seeded.whatsapp && !gym.whatsapp) {
-        gym.whatsapp = seeded.whatsapp;
-        if (seeded.whatsappLabel) gym.whatsappLabel = seeded.whatsappLabel;
-        if (seeded.bookingNote) gym.bookingNote = seeded.bookingNote;
+      if (seeded.whatsapp) {
+        if (!gym.whatsapp) gym.whatsapp = seeded.whatsapp;
+        if (seeded.whatsappLabel === "预约") {
+          gym.whatsapp = seeded.whatsapp;
+          gym.whatsappLabel = seeded.whatsappLabel;
+          if (seeded.bookingNote) gym.bookingNote = seeded.bookingNote;
+        }
       }
     }
     return data;

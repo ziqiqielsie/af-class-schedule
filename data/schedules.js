@@ -102,8 +102,8 @@ window.AF_SEED = {
       region: "east",
       color: "#14b8a6",
       whatsapp: "90187538",
-      whatsappLabel: "取消/改期",
-      bookingNote: "取消预约请 WhatsApp 9018 7538",
+      whatsappLabel: "预约",
+      bookingNote: "WhatsApp 9018 7538 预约。",
       notes: "",
       classes: [
         { id: "kt-mon-1200-hiit", day: "mon", name: "myzone HIIT", start: "12:00", end: "12:30", instructor: "Shaun" },
@@ -138,8 +138,8 @@ window.AF_SEED = {
       region: "west",
       color: "#06b6d4",
       whatsapp: "98396017",
-      whatsappLabel: "取消/改期",
-      bookingNote: "取消预约请 WhatsApp 9839 6017",
+      whatsappLabel: "预约",
+      bookingNote: "WhatsApp 9839 6017 预约。",
       notes: "",
       classes: [
         { id: "pp-mon-0700-pilates", day: "mon", name: "Pilates", start: "07:00", end: "08:00", instructor: "Levian" },

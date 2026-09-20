@@ -96,6 +96,11 @@
         gym.bookingNote = seeded.bookingNote;
         if (seeded.whatsappLabel) gym.whatsappLabel = seeded.whatsappLabel;
       }
+      if (seeded.whatsapp && !gym.whatsapp) {
+        gym.whatsapp = seeded.whatsapp;
+        if (seeded.whatsappLabel) gym.whatsappLabel = seeded.whatsappLabel;
+        if (seeded.bookingNote) gym.bookingNote = seeded.bookingNote;
+      }
     }
     return data;
   }

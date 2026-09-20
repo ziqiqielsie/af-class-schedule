@@ -253,10 +253,10 @@ window.AF_SEED = {
       name: "Bukit Merah",
       region: "south",
       color: "#8b6cc9",
-      whatsapp: "",
-      whatsappLabel: "",
+      whatsapp: "80878131",
+      whatsappLabel: "预约",
       bookingUrl: "",
-      bookingNote: "全体 AF 会员免费，先到先得。",
+      bookingNote: "全体 AF 会员免费，先到先得。WhatsApp 8087 8131 预约。",
       notes: "",
       classes: [
         { id: "bm-mon-1900-circuit", day: "mon", name: "Metabolic Circuit", start: "19:00", end: "20:00" },

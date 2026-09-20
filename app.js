@@ -227,13 +227,33 @@
     }[id] || id;
   }
 
+  function waMemberBlock() {
+    return [
+      "Name: Elsie",
+      "Home Club: Wheelock Place",
+      "Key Fob: D.A.",
+      "",
+      "Thank you and have a good day! :)"
+    ].join("\n");
+  }
+
   function waLink(gym, item) {
     if (!gym.whatsapp) return "";
     const number = String(gym.whatsapp).replace(/\D/g, "");
     const local = number.length === 8 ? `65${number}` : number;
     const text = item
-      ? `Hi, I'd like to book ${item.name} at ${gym.name} on ${dayEnglish(item.day)} at ${item.start}.`
-      : `Hi, I'd like to enquire about group classes at ${gym.name}.`;
+      ? [
+          "Hi there! Can you please help me book below class:",
+          `Class Name: ${item.name}`,
+          `Gym: ${gym.name}`,
+          `Day: ${dayEnglish(item.day)}`,
+          `Time: ${item.start}`,
+          waMemberBlock()
+        ].join("\n")
+      : [
+          `Hi there! Can you please help me enquire about group classes at ${gym.name}?`,
+          waMemberBlock()
+        ].join("\n");
     return `https://wa.me/${local}?text=${encodeURIComponent(text)}`;
   }
 

@@ -215,13 +215,25 @@
     return rows;
   }
 
+  function dayEnglish(id) {
+    return {
+      mon: "Monday",
+      tue: "Tuesday",
+      wed: "Wednesday",
+      thu: "Thursday",
+      fri: "Friday",
+      sat: "Saturday",
+      sun: "Sunday"
+    }[id] || id;
+  }
+
   function waLink(gym, item) {
     if (!gym.whatsapp) return "";
     const number = String(gym.whatsapp).replace(/\D/g, "");
     const local = number.length === 8 ? `65${number}` : number;
     const text = item
-      ? `你好，想预约 ${gym.name} ${dayFull(item.day)} ${item.start} ${item.name}`
-      : `你好，想咨询 ${gym.name} 团课`;
+      ? `Hi, I'd like to book ${item.name} at ${gym.name} on ${dayEnglish(item.day)} at ${item.start}.`
+      : `Hi, I'd like to enquire about group classes at ${gym.name}.`;
     return `https://wa.me/${local}?text=${encodeURIComponent(text)}`;
   }
 

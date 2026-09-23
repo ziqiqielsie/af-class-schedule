@@ -273,8 +273,8 @@ window.AF_SEED = {
       color: "#5b4cdb",
       whatsapp: "",
       whatsappLabel: "",
-      bookingUrl: "",
-      bookingNote: "课表海报报名。",
+      bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78712&uid=0&id_class_tab=1",
+      bookingNote: "线上预约 WellnessLiving。",
       notes: "2026 Group Class Schedule",
       classes: [
         { id: "tm-mon-1800-yoga", day: "mon", name: "Hatha Yoga", start: "18:00", end: "19:00", instructor: "Audrey" },

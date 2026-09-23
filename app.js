@@ -2,13 +2,13 @@
   const STORAGE_KEY = "af-class-schedule-v1";
   const TZ = "Asia/Singapore";
   const DAYS = [
-    { id: "mon", label: "一", full: "周一", js: 1, rrule: "MO" },
-    { id: "tue", label: "二", full: "周二", js: 2, rrule: "TU" },
-    { id: "wed", label: "三", full: "周三", js: 3, rrule: "WE" },
-    { id: "thu", label: "四", full: "周四", js: 4, rrule: "TH" },
-    { id: "fri", label: "五", full: "周五", js: 5, rrule: "FR" },
-    { id: "sat", label: "六", full: "周六", js: 6, rrule: "SA" },
-    { id: "sun", label: "日", full: "周日", js: 0, rrule: "SU" }
+    { id: "mon", label: "Mon", full: "Monday", js: 1, rrule: "MO" },
+    { id: "tue", label: "Tue", full: "Tuesday", js: 2, rrule: "TU" },
+    { id: "wed", label: "Wed", full: "Wednesday", js: 3, rrule: "WE" },
+    { id: "thu", label: "Thu", full: "Thursday", js: 4, rrule: "TH" },
+    { id: "fri", label: "Fri", full: "Friday", js: 5, rrule: "FR" },
+    { id: "sat", label: "Sat", full: "Saturday", js: 6, rrule: "SA" },
+    { id: "sun", label: "Sun", full: "Sunday", js: 0, rrule: "SU" }
   ];
   const CALENDAR_NAME = "Class Timetable";
   const DAY_ALIAS = {
@@ -20,16 +20,16 @@
     sat: "sat", saturday: "sat", "周六": "sat", "星期六": "sat", "六": "sat",
     sun: "sun", sunday: "sun", "周日": "sun", "星期日": "sun", "日": "sun", "天": "sun"
   };
-  const REGIONS = { east: "东部", west: "西部", central: "中部", south: "南部", north: "北部" };
+  const REGIONS = { east: "East", west: "West", central: "Central", south: "South", north: "North" };
   const KINDS = [
-    { id: "all", label: "全部", sticker: "wave" },
-    { id: "yoga", label: "瑜伽拉伸", sticker: "stretch" },
-    { id: "pilates", label: "普拉提", sticker: "pilates" },
-    { id: "combat", label: "搏击", sticker: "lift" },
-    { id: "strength", label: "力量", sticker: "kettle" },
-    { id: "cardio", label: "有氧", sticker: "run" },
-    { id: "dance", label: "舞蹈", sticker: "music" },
-    { id: "cycle", label: "单车", sticker: "hydrate" }
+    { id: "all", label: "All", sticker: "wave" },
+    { id: "yoga", label: "Yoga / Stretch", sticker: "stretch" },
+    { id: "pilates", label: "Pilates", sticker: "pilates" },
+    { id: "combat", label: "Combat", sticker: "lift" },
+    { id: "strength", label: "Strength", sticker: "kettle" },
+    { id: "cardio", label: "Cardio", sticker: "run" },
+    { id: "dance", label: "Dance", sticker: "music" },
+    { id: "cycle", label: "Cycling", sticker: "hydrate" }
   ];
 
   const appEl = document.getElementById("app");
@@ -81,6 +81,10 @@
     }
   }
 
+  function isWaBookingLabel(label) {
+    return /^(预约|book)$/i.test(String(label || "").trim());
+  }
+
   function mergeSeedBooking(data) {
     const existingIds = new Set(data.gyms.map((gym) => gym.id));
     for (const seeded of seed.gyms) {
@@ -98,12 +102,13 @@
       }
       if (seeded.whatsapp) {
         if (!gym.whatsapp) gym.whatsapp = seeded.whatsapp;
-        if (seeded.whatsappLabel === "预约") {
+        if (isWaBookingLabel(seeded.whatsappLabel)) {
           gym.whatsapp = seeded.whatsapp;
-          gym.whatsappLabel = seeded.whatsappLabel;
+          gym.whatsappLabel = "Book";
           if (seeded.bookingNote) gym.bookingNote = seeded.bookingNote;
         }
       }
+      if (gym.whatsappLabel === "预约") gym.whatsappLabel = "Book";
     }
     return data;
   }
@@ -141,7 +146,7 @@
 
   function durationLabel(start, end) {
     const mins = toMinutes(end) - toMinutes(start);
-    return mins > 0 ? `${mins} 分钟` : "";
+    return mins > 0 ? `${mins} min` : "";
   }
 
   function dayFull(id) {
@@ -161,7 +166,7 @@
   }
 
   function kindLabel(kind) {
-    return KINDS.find((item) => item.id === kind)?.label || "其他";
+    return KINDS.find((item) => item.id === kind)?.label || "Other";
   }
 
   function gymById(id) {
@@ -265,7 +270,7 @@
   }
 
   function primaryBookHref(gym, item) {
-    return bookLink(gym) || (gym.whatsappLabel === "预约" ? waLink(gym, item) : "");
+    return bookLink(gym) || (isWaBookingLabel(gym.whatsappLabel) ? waLink(gym, item) : "");
   }
 
   function bookLinksHtml(gym, item, variant) {
@@ -274,7 +279,7 @@
     const cls = variant === "button" ? "btn primary" : "wa-link";
     const parts = [];
     if (href) {
-      parts.push(`<a class="${cls}" href="${escapeHtml(href)}" target="_blank" rel="noopener">预约</a>`);
+      parts.push(`<a class="${cls}" href="${escapeHtml(href)}" target="_blank" rel="noopener">Book</a>`);
     }
     if (variant === "button" && wa && bookLink(gym)) {
       parts.push(`<a class="btn ghost" href="${escapeHtml(wa)}" target="_blank" rel="noopener">${escapeHtml(gym.whatsappLabel || "WhatsApp")}</a>`);
@@ -319,10 +324,10 @@
 
   function eventDetails(gym, item) {
     return [
-      item.instructor ? `教练：${item.instructor}` : "",
+      item.instructor ? `Coach: ${item.instructor}` : "",
       item.note ? item.note : "",
       gym.bookingNote || "",
-      `每周${dayFull(item.day)} ${item.start}–${item.end}`
+      `Every ${dayFull(item.day)} ${item.start}–${item.end}`
     ].filter(Boolean).join("\n");
   }
 
@@ -420,17 +425,17 @@
 
   function addToClassTimetable(rows) {
     if (!rows.length) {
-      toast("没有可添加的课");
+      toast("No classes to add");
       return;
     }
     if (rows.length === 1) {
       window.open(googleCalUrl(rows[0].gym, rows[0].item), "_blank", "noopener");
-      toast("保存前把日历选成 Class Timetable");
+      toast("Choose the Class Timetable calendar before saving");
       return;
     }
     downloadIcs(`${CALENDAR_NAME}.ics`, buildIcs(rows));
     window.open("https://calendar.google.com/calendar/u/0/r/settings/export", "_blank", "noopener");
-    toast("请导入刚下载的文件，日历选 Class Timetable");
+    toast("Import the downloaded file and pick Class Timetable");
   }
 
   function gymClassRows(gym) {
@@ -465,7 +470,7 @@
     const sticker = pose === "sit" ? "wink" : "bath";
     return `
       <div class="empty card">
-        <img class="lulu-empty-img" src="${stickerSrc(sticker)}" alt="水豚噜噜">
+        <img class="lulu-empty-img" src="${stickerSrc(sticker)}" alt="Lulu the capybara">
         <p>${escapeHtml(message)}</p>
       </div>
     `;
@@ -475,21 +480,21 @@
     const today = dayFull(todayId());
     return `
       <header class="hero">
-        <img class="lulu-hero" src="./img/lulu-sheet.jpg" alt="Gym Time 噜噜贴纸">
+        <img class="lulu-hero" src="./img/lulu-sheet.jpg" alt="Gym Time Lulu stickers">
         <div class="hero-copy">
           <div class="hero-top">
             <div class="logo">
               <span class="logo-mark"><img src="${stickerSrc("wave")}" alt=""></span>
-              噜噜课表
+              Lulu Timetable
             </div>
             <div class="top-actions">
               <button class="btn ${state.view === "manage" ? "primary" : ""}" data-action="toggle-manage">
-                ${state.view === "manage" ? "完成" : "编辑课表"}
+                ${state.view === "manage" ? "Done" : "Edit timetable"}
               </button>
             </div>
           </div>
-          <h1>团课课表</h1>
-          <div class="subtitle">Gym Time · 今天是${today} · 新加坡时间 · ${state.data.gyms.length} 家门店</div>
+          <h1>Group Classes</h1>
+          <div class="subtitle">Gym Time · Today is ${today} · Singapore time · ${state.data.gyms.length} gyms</div>
         </div>
       </header>
     `;
@@ -499,15 +504,15 @@
     if (state.view === "manage") return "";
     return `
       <nav class="tabs">
-        <button data-view="day" class="${state.view === "day" ? "active" : ""}">按星期</button>
-        <button data-view="gym" class="${state.view === "gym" ? "active" : ""}">按门店</button>
+        <button data-view="day" class="${state.view === "day" ? "active" : ""}">By day</button>
+        <button data-view="gym" class="${state.view === "gym" ? "active" : ""}">By gym</button>
       </nav>
     `;
   }
 
   function renderBrowse() {
     return `
-      <div class="search"><input id="q" type="search" placeholder="搜课程、教练或门店 🍊" value="${escapeHtml(state.query)}" /></div>
+      <div class="search"><input id="q" type="search" placeholder="Search classes, coaches, or gyms 🍊" value="${escapeHtml(state.query)}" /></div>
       ${state.view === "day" ? renderGymChips() : ""}
       ${renderKindChips()}
       ${state.view === "day" ? renderDayView() : renderGymView()}
@@ -515,7 +520,7 @@
   }
 
   function renderGymChips() {
-    const chips = [`<button class="chip ${state.gymFilters.length === 0 ? "active" : ""}" data-gym-filter="all">全部</button>`]
+    const chips = [`<button class="chip ${state.gymFilters.length === 0 ? "active" : ""}" data-gym-filter="all">All</button>`]
       .concat(state.data.gyms.map((gym) => `
         <button class="chip ${state.gymFilters.includes(gym.id) ? "active" : ""}" data-gym-filter="${escapeHtml(gym.id)}" style="--chip:${gym.color}">
           ${escapeHtml(gym.name)}
@@ -540,19 +545,19 @@
         ${DAYS.map((day) => `
           <button class="chip ${state.day === day.id ? "active" : ""}" data-day="${day.id}">
             ${day.label}
-            ${day.id === todayId() ? "<small>今天</small>" : ""}
+            ${day.id === todayId() ? "<small>today</small>" : ""}
           </button>
         `).join("")}
       </div>
       <div class="meta-row">
-        <span>${dayFull(state.day)} · ${rows.length} 节课</span>
+        <span>${dayFull(state.day)} · ${rows.length} class${rows.length === 1 ? "" : "es"}</span>
         <span class="meta-actions">
-          ${isDirty() ? `<span class="pill">已有本地修改</span>` : ""}
-          ${rows.length ? `<button type="button" class="btn" data-cal-day>加入 Class Timetable</button>` : ""}
+          ${isDirty() ? `<span class="pill">Local edits</span>` : ""}
+          ${rows.length ? `<button type="button" class="btn" data-cal-day>Add to Class Timetable</button>` : ""}
         </span>
       </div>
       <div class="list">
-        ${rows.length ? rows.map(renderClassCard).join("") : emptyHtml("噜噜这天去泡温泉了，没有符合筛选的团课。")}
+        ${rows.length ? rows.map(renderClassCard).join("") : emptyHtml("Lulu is in the onsen today — no classes match these filters.")}
       </div>
     `;
   }
@@ -560,7 +565,7 @@
   function renderClassCard({ gym, item }) {
     const status = timedStatus(item);
     const kind = classKind(item.name);
-    const statusHtml = status === "live" ? `<div class="live">进行中</div>` : status === "soon" ? `<div class="soon">即将开始</div>` : "";
+    const statusHtml = status === "live" ? `<div class="live">Live</div>` : status === "soon" ? `<div class="soon">Soon</div>` : "";
     return `
       <article class="card class-card" style="--gym-color:${gym.color}">
         <div class="time">${escapeHtml(item.start)}<span>${escapeHtml(item.end)}</span><span>${escapeHtml(durationLabel(item.start, item.end))}${statusHtml}</span></div>
@@ -573,7 +578,7 @@
           </div>
           <div class="card-actions">
             ${bookLinksHtml(gym, item)}
-            <button type="button" class="wa-link" data-cal-class="${escapeHtml(gym.id)}::${escapeHtml(item.id)}">加入日历</button>
+            <button type="button" class="wa-link" data-cal-class="${escapeHtml(gym.id)}::${escapeHtml(item.id)}">Add to calendar</button>
           </div>
         </div>
         <div class="kind">
@@ -589,7 +594,7 @@
     const selected = state.gymId && gyms.some((gym) => gym.id === state.gymId) ? state.gymId : gyms[0]?.id;
     state.gymId = selected || null;
     const gym = gymById(state.gymId);
-    if (!gym) return emptyHtml("还没有门店。去「编辑课表」添加一家吧。", "sit");
+    if (!gym) return emptyHtml("No gyms yet. Add one in Edit timetable.", "sit");
     return `
       <div class="chip-row">
         ${gyms.map((item) => `
@@ -599,11 +604,11 @@
       <div class="gym-head">
         <div>
           <h2 style="margin:0">${escapeHtml(gym.name)}</h2>
-          <div class="subtitle">${REGIONS[gym.region] || ""} · ${(gym.classes || []).length} 节课${gym.bookingNote ? ` · ${escapeHtml(gym.bookingNote)}` : ""}</div>
+          <div class="subtitle">${REGIONS[gym.region] || ""} · ${(gym.classes || []).length} class${(gym.classes || []).length === 1 ? "" : "es"}${gym.bookingNote ? ` · ${escapeHtml(gym.bookingNote)}` : ""}</div>
         </div>
         <div class="mini-actions">
           ${bookLinksHtml(gym, null, "button")}
-          <button type="button" class="btn" data-cal-gym="${escapeHtml(gym.id)}">整周加入日历</button>
+          <button type="button" class="btn" data-cal-gym="${escapeHtml(gym.id)}">Add week to calendar</button>
         </div>
       </div>
       ${gym.notes ? `<p class="hint">${escapeHtml(gym.notes)}</p>` : ""}
@@ -613,24 +618,24 @@
           .sort((a, b) => toMinutes(a.start) - toMinutes(b.start));
         if (!items.length) return "";
         return `
-          <div class="day-label">${day.full}${day.id === todayId() ? " · 今天" : ""}</div>
+          <div class="day-label">${day.full}${day.id === todayId() ? " · today" : ""}</div>
           <div class="list">${items.map((item) => renderClassCard({ gym, item })).join("")}</div>
         `;
-      }).join("") || emptyHtml("这家店暂时没有符合筛选的课。")}
+      }).join("") || emptyHtml("No classes match these filters at this gym.")}
     `;
   }
 
   function renderManage() {
     return `
       <div class="manage-toolbar">
-        <button class="btn primary" data-action="add-gym">添加门店</button>
-        <button class="btn" data-action="export">导出 JSON</button>
-        <button class="btn" data-action="import">导入 / 替换全部课表</button>
-        <button class="btn" data-action="reset">恢复原始课表</button>
+        <button class="btn primary" data-action="add-gym">Add gym</button>
+        <button class="btn" data-action="export">Export JSON</button>
+        <button class="btn" data-action="import">Import / replace timetable</button>
+        <button class="btn" data-action="reset">Restore original</button>
       </div>
-      <p class="hint">改动会保存在这台设备的浏览器里。想长期保留或换手机用，请先导出 JSON；也可以把导出内容贴进 <code>data/schedules.js</code> 作为新的默认课表。</p>
-      ${isDirty() ? `<div class="meta-row"><span class="pill">已有本地修改，尚未写回默认文件</span></div>` : ""}
-      ${state.data.gyms.map(renderGymManage).join("") || emptyHtml("还没有门店。", "sit")};
+      <p class="hint">Edits stay in this browser. Export JSON to keep a backup or move phones. You can also paste the export into <code>data/schedules.js</code> as the new default timetable.</p>
+      ${isDirty() ? `<div class="meta-row"><span class="pill">Local edits not written back to the default file</span></div>` : ""}
+      ${state.data.gyms.map(renderGymManage).join("") || emptyHtml("No gyms yet.", "sit")}
     `;
   }
 
@@ -642,14 +647,14 @@
         <div class="gym-manage-head">
           <div>
             <div class="class-name">${escapeHtml(gym.name)}</div>
-            <div class="class-meta">${REGIONS[gym.region] || "未分区"} · ${classes.length} 节课${gym.whatsapp ? ` · ${escapeHtml(gym.whatsapp)}` : ""}</div>
+            <div class="class-meta">${REGIONS[gym.region] || "Unassigned"} · ${classes.length} class${classes.length === 1 ? "" : "es"}${gym.whatsapp ? ` · ${escapeHtml(gym.whatsapp)}` : ""}</div>
           </div>
           <div class="mini-actions">
-            <button class="btn" data-expand="${gym.id}">${open ? "收起" : "课程"}</button>
-            <button class="btn" data-edit-gym="${gym.id}">编辑门店</button>
-            <button class="btn" data-add-class="${gym.id}">加一节课</button>
-            <button class="btn" data-bulk="${gym.id}">批量/替换</button>
-            <button class="btn danger" data-delete-gym="${gym.id}">删除门店</button>
+            <button class="btn" data-expand="${gym.id}">${open ? "Collapse" : "Classes"}</button>
+            <button class="btn" data-edit-gym="${gym.id}">Edit gym</button>
+            <button class="btn" data-add-class="${gym.id}">Add class</button>
+            <button class="btn" data-bulk="${gym.id}">Bulk / replace</button>
+            <button class="btn danger" data-delete-gym="${gym.id}">Delete gym</button>
           </div>
         </div>
         ${open ? classes.map((item) => `
@@ -659,11 +664,11 @@
               <div class="class-meta">${escapeHtml(item.name)}${item.instructor ? ` · ${escapeHtml(item.instructor)}` : ""}</div>
             </div>
             <div class="mini-actions">
-              <button class="btn" data-edit-class="${gym.id}::${item.id}">改</button>
-              <button class="btn danger" data-delete-class="${gym.id}::${item.id}">删</button>
+              <button class="btn" data-edit-class="${gym.id}::${item.id}">Edit</button>
+              <button class="btn danger" data-delete-class="${gym.id}::${item.id}">Delete</button>
             </div>
           </div>
-        `).join("") || `<div class="hint" style="margin-top:10px">这家店还没有课。</div>` : ""}
+        `).join("") || `<div class="hint" style="margin-top:10px">This gym has no classes yet.</div>` : ""}
       </section>
     `;
   }
@@ -681,29 +686,29 @@
     return `
       <div class="modal-backdrop" data-close-modal>
         <form class="modal" id="gym-form">
-          <h3>${gym.id ? "编辑门店" : "添加门店"}</h3>
+          <h3>${gym.id ? "Edit gym" : "Add gym"}</h3>
           <div class="fields">
-            <div class="field"><label>门店名</label><input name="name" required value="${escapeHtml(gym.name || "")}" /></div>
+            <div class="field"><label>Gym name</label><input name="name" required value="${escapeHtml(gym.name || "")}" /></div>
             <div class="two">
               <div class="field">
-                <label>区域</label>
+                <label>Region</label>
                 <select name="region">
                   ${Object.entries(REGIONS).map(([id, label]) => `<option value="${id}" ${gym.region === id ? "selected" : ""}>${label}</option>`).join("")}
                 </select>
               </div>
-              <div class="field"><label>颜色</label><input name="color" type="color" value="${escapeHtml(gym.color || "#f4a261")}" /></div>
+              <div class="field"><label>Colour</label><input name="color" type="color" value="${escapeHtml(gym.color || "#f4a261")}" /></div>
             </div>
             <div class="two">
-              <div class="field"><label>WhatsApp（8 位新加坡号码）</label><input name="whatsapp" inputmode="numeric" value="${escapeHtml(gym.whatsapp || "")}" /></div>
-              <div class="field"><label>按钮文字</label><input name="whatsappLabel" value="${escapeHtml(gym.whatsappLabel || "预约")}" /></div>
+              <div class="field"><label>WhatsApp (8-digit Singapore number)</label><input name="whatsapp" inputmode="numeric" value="${escapeHtml(gym.whatsapp || "")}" /></div>
+              <div class="field"><label>Button label</label><input name="whatsappLabel" value="${escapeHtml(gym.whatsappLabel || "Book")}" /></div>
             </div>
-            <div class="field"><label>预约网页链接</label><input name="bookingUrl" type="url" placeholder="https://" value="${escapeHtml(gym.bookingUrl || "")}" /></div>
-            <div class="field"><label>预约说明</label><input name="bookingNote" value="${escapeHtml(gym.bookingNote || "")}" /></div>
-            <div class="field"><label>备注</label><textarea name="notes" rows="3">${escapeHtml(gym.notes || "")}</textarea></div>
+            <div class="field"><label>Booking page URL</label><input name="bookingUrl" type="url" placeholder="https://" value="${escapeHtml(gym.bookingUrl || "")}" /></div>
+            <div class="field"><label>Booking note</label><input name="bookingNote" value="${escapeHtml(gym.bookingNote || "")}" /></div>
+            <div class="field"><label>Notes</label><textarea name="notes" rows="3">${escapeHtml(gym.notes || "")}</textarea></div>
           </div>
           <div class="modal-actions">
-            <button type="button" class="btn ghost" data-close-modal>取消</button>
-            <button class="btn primary" type="submit">保存</button>
+            <button type="button" class="btn ghost" data-close-modal>Cancel</button>
+            <button class="btn primary" type="submit">Save</button>
           </div>
         </form>
       </div>
@@ -715,25 +720,25 @@
     return `
       <div class="modal-backdrop" data-close-modal>
         <form class="modal" id="class-form">
-          <h3>${item.id ? "编辑课程" : "加一节课"}</h3>
+          <h3>${item.id ? "Edit class" : "Add class"}</h3>
           <div class="fields">
             <div class="field">
-              <label>星期</label>
+              <label>Day</label>
               <select name="day">${DAYS.map((day) => `<option value="${day.id}" ${item.day === day.id ? "selected" : ""}>${day.full}</option>`).join("")}</select>
             </div>
-            <div class="field"><label>课程名</label><input name="name" required value="${escapeHtml(item.name || "")}" /></div>
+            <div class="field"><label>Class name</label><input name="name" required value="${escapeHtml(item.name || "")}" /></div>
             <div class="two">
-              <div class="field"><label>开始</label><input name="start" type="time" required value="${escapeHtml(item.start || "19:00")}" /></div>
-              <div class="field"><label>结束</label><input name="end" type="time" required value="${escapeHtml(item.end || "20:00")}" /></div>
+              <div class="field"><label>Start</label><input name="start" type="time" required value="${escapeHtml(item.start || "19:00")}" /></div>
+              <div class="field"><label>End</label><input name="end" type="time" required value="${escapeHtml(item.end || "20:00")}" /></div>
             </div>
             <div class="two">
-              <div class="field"><label>教练</label><input name="instructor" value="${escapeHtml(item.instructor || "")}" /></div>
-              <div class="field"><label>备注</label><input name="note" value="${escapeHtml(item.note || "")}" /></div>
+              <div class="field"><label>Coach</label><input name="instructor" value="${escapeHtml(item.instructor || "")}" /></div>
+              <div class="field"><label>Note</label><input name="note" value="${escapeHtml(item.note || "")}" /></div>
             </div>
           </div>
           <div class="modal-actions">
-            <button type="button" class="btn ghost" data-close-modal>取消</button>
-            <button class="btn primary" type="submit">保存</button>
+            <button type="button" class="btn ghost" data-close-modal>Cancel</button>
+            <button class="btn primary" type="submit">Save</button>
           </div>
         </form>
       </div>
@@ -744,21 +749,21 @@
     return `
       <div class="modal-backdrop" data-close-modal>
         <form class="modal" id="bulk-form">
-          <h3>批量添加 / 替换课表</h3>
-          <p class="hint">每行一节课，例如：<br>周一 19:00-20:00 Yoga<br>Tue 7:00pm-8:00pm HIIT | Shaun<br>选择「替换」会先清空这家店的现有课程。</p>
+          <h3>Bulk add / replace classes</h3>
+          <p class="hint">One class per line, for example:<br>Mon 19:00-20:00 Yoga<br>Tue 7:00pm-8:00pm HIIT | Shaun<br>Replace clears this gym's current classes first.</p>
           <div class="fields">
             <div class="field">
-              <label>写入方式</label>
+              <label>Mode</label>
               <select name="mode">
-                <option value="append">追加到现有课表</option>
-                <option value="replace">替换整份课表</option>
+                <option value="append">Append to current timetable</option>
+                <option value="replace">Replace entire timetable</option>
               </select>
             </div>
-            <div class="field"><label>课程列表</label><textarea name="text" rows="10" required placeholder="Wed 18:30-19:30 Pilates | Levian"></textarea></div>
+            <div class="field"><label>Class list</label><textarea name="text" rows="10" required placeholder="Wed 18:30-19:30 Pilates | Levian"></textarea></div>
           </div>
           <div class="modal-actions">
-            <button type="button" class="btn ghost" data-close-modal>取消</button>
-            <button class="btn primary" type="submit">写入</button>
+            <button type="button" class="btn ghost" data-close-modal>Cancel</button>
+            <button class="btn primary" type="submit">Save</button>
           </div>
         </form>
       </div>
@@ -854,16 +859,16 @@
       if (btn) btn.addEventListener("click", fn);
     };
     action("add-gym", () => {
-      state.modal = { type: "gym", gym: { name: "", region: "east", color: "#f4a261", whatsapp: "", whatsappLabel: "预约", bookingUrl: "", bookingNote: "", notes: "", classes: [] } };
+      state.modal = { type: "gym", gym: { name: "", region: "east", color: "#f4a261", whatsapp: "", whatsappLabel: "Book", bookingUrl: "", bookingNote: "", notes: "", classes: [] } };
       render();
     });
     action("export", exportJson);
     action("import", () => file && file.click());
     action("reset", () => {
-      if (!confirm("恢复成最初从海报录入的课表？本地修改会丢掉。")) return;
+      if (!confirm("Restore the original poster timetable? Local edits will be lost.")) return;
       state.data = structuredClone(seed);
       persist();
-      toast("已恢复原始课表");
+      toast("Original timetable restored");
       render();
     });
     if (file) {
@@ -873,13 +878,13 @@
         try {
           const parsed = JSON.parse(await picked.text());
           if (!parsed?.gyms) throw new Error("missing gyms");
-          if (!confirm("导入会替换当前全部课表，确定吗？")) return;
+          if (!confirm("Import will replace the current timetable. Continue?")) return;
           state.data = parsed;
           persist();
-          toast("已导入课表");
+          toast("Timetable imported");
           render();
         } catch {
-          toast("JSON 格式不对");
+          toast("Invalid JSON");
         }
         file.value = "";
       });
@@ -912,10 +917,10 @@
     appEl.querySelectorAll("[data-delete-gym]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const gym = gymById(btn.dataset.deleteGym);
-        if (!confirm(`删除 ${gym.name} 及其全部课程？`)) return;
+        if (!confirm(`Delete ${gym.name} and all of its classes?`)) return;
         state.data.gyms = state.data.gyms.filter((item) => item.id !== gym.id);
         persist();
-        toast("已删除门店");
+        toast("Gym deleted");
         render();
       });
     });
@@ -934,7 +939,7 @@
         const gym = gymById(gymId);
         gym.classes = gym.classes.filter((cls) => cls.id !== classId);
         persist();
-        toast("已删除课程");
+        toast("Class deleted");
         render();
       });
     });
@@ -968,7 +973,7 @@
         }
         persist();
         state.modal = null;
-        toast("门店已保存");
+        toast("Gym saved");
         render();
       });
     }
@@ -988,7 +993,7 @@
         }
         persist();
         state.modal = null;
-        toast("课程已保存");
+        toast("Class saved");
         render();
       });
     }
@@ -1000,7 +1005,7 @@
         const gym = gymById(state.modal.gymId);
         const parsed = parseBulk(form.text);
         if (!parsed.length) {
-          toast("没有读到有效课程");
+          toast("No valid classes found");
           return;
         }
         if (form.mode === "replace") gym.classes = [];
@@ -1008,7 +1013,7 @@
         persist();
         state.expandedGym = gym.id;
         state.modal = null;
-        toast(`${form.mode === "replace" ? "已替换" : "已追加"} ${parsed.length} 节课`);
+        toast(`${form.mode === "replace" ? "Replaced" : "Added"} ${parsed.length} class${parsed.length === 1 ? "" : "es"}`);
         render();
       });
     }
@@ -1056,7 +1061,7 @@
     a.download = "af-schedules.json";
     a.click();
     URL.revokeObjectURL(url);
-    toast("已导出 JSON");
+    toast("JSON exported");
   }
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {

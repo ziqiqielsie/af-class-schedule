@@ -1,11 +1,11 @@
 {
-  "name": "噜噜课表",
-  "short_name": "噜噜课表",
+  "name": "Lulu Timetable",
+  "short_name": "Lulu Timetable",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff4dc",
   "theme_color": "#f4a261",
-  "lang": "zh-Hans",
+  "lang": "en",
   "icons": [
     {
       "src": "./img/stickers/wave.jpg",

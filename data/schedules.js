@@ -12,7 +12,7 @@ window.AF_SEED = {
       whatsapp: "92760599",
       whatsappLabel: "WhatsApp",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78711&uid=0&id_class_tab=1",
-      bookingNote: "线上预约 WellnessLiving。也可 WhatsApp 9276 0599。",
+      bookingNote: "Book online via WellnessLiving. WhatsApp 9276 0599 also works.",
       notes: "",
       classes: [
         { id: "mb-mon-1900-boxing", day: "mon", name: "Boxing Cardio / Conditioning / HIIT", start: "19:00", end: "20:00" },
@@ -36,7 +36,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78649&uid=0&id_class_tab=1",
-      bookingNote: "线上预约 WellnessLiving",
+      bookingNote: "Book online via WellnessLiving.",
       notes: "",
       classes: [
         { id: "dh-mon-1145-abt", day: "mon", name: "Strength/ABT", start: "11:45", end: "12:30", instructor: "Alvelyn" },
@@ -62,7 +62,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "",
-      bookingNote: "课表海报上有 WhatsApp 二维码，可扫码报名。",
+      bookingNote: "Sign up via the WhatsApp QR on the class poster.",
       notes: "",
       classes: [
         { id: "ch-mon-1800-pilates", day: "mon", name: "Pilates", start: "18:00", end: "18:55" },
@@ -102,8 +102,8 @@ window.AF_SEED = {
       region: "east",
       color: "#14b8a6",
       whatsapp: "90187538",
-      whatsappLabel: "预约",
-      bookingNote: "WhatsApp 9018 7538 预约。",
+      whatsappLabel: "Book",
+      bookingNote: "Book via WhatsApp 9018 7538.",
       notes: "",
       classes: [
         { id: "kt-mon-1200-hiit", day: "mon", name: "myzone HIIT", start: "12:00", end: "12:30", instructor: "Shaun" },
@@ -138,8 +138,8 @@ window.AF_SEED = {
       region: "west",
       color: "#06b6d4",
       whatsapp: "98396017",
-      whatsappLabel: "预约",
-      bookingNote: "WhatsApp 9839 6017 预约。",
+      whatsappLabel: "Book",
+      bookingNote: "Book via WhatsApp 9839 6017.",
       notes: "",
       classes: [
         { id: "pp-mon-0700-pilates", day: "mon", name: "Pilates", start: "07:00", end: "08:00", instructor: "Levian" },
@@ -182,8 +182,8 @@ window.AF_SEED = {
       whatsapp: "85120878",
       whatsappLabel: "WhatsApp",
       bookingUrl: "https://pt.af247.app/me/login",
-      bookingNote: "会员线上预约。非本店会员也可 WhatsApp 8512 0878。公共假期没课。",
-      notes: "Q4 课表 · 会员免费",
+      bookingNote: "Members book online. Non-home members can WhatsApp 8512 0878. No classes on public holidays.",
+      notes: "Q4 timetable · free for members",
       classes: [
         { id: "wp-mon-1830-pilates", day: "mon", name: "Pilates", start: "18:30", end: "19:30" },
         { id: "wp-mon-1930-zumba", day: "mon", name: "Zumba", start: "19:30", end: "20:30" },
@@ -201,8 +201,8 @@ window.AF_SEED = {
       region: "central",
       color: "#c97b4a",
       whatsapp: "89004077",
-      whatsappLabel: "预约",
-      bookingNote: "开课前一天开放预约，WhatsApp 8900 4077。本店会员优先。",
+      whatsappLabel: "Book",
+      bookingNote: "Booking opens the day before. WhatsApp 8900 4077. Home members first.",
       notes: "",
       classes: [
         { id: "mc-mon-1900-chair", day: "mon", name: "Chair Yoga", start: "19:00", end: "20:00" },
@@ -219,15 +219,15 @@ window.AF_SEED = {
       color: "#c4a574",
       whatsapp: "",
       whatsappLabel: "",
-      bookingNote: "门口课表有 WhatsApp 二维码，可扫码预约。",
-      notes: "周五中午那格原图被遮住，按 Yoga 12:15（All Levels）录入，如有误可在编辑里改。",
+      bookingNote: "Book via the WhatsApp QR on the club poster.",
+      notes: "Friday lunch slot was covered on the poster; entered as Yoga 12:15 (All Levels). Edit if needed.",
       classes: [
         { id: "cs-mon-1215-yoga", day: "mon", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels" },
         { id: "cs-mon-1845-yoga", day: "mon", name: "Yoga", start: "18:45", end: "19:45", level: "all", note: "All Levels" },
         { id: "cs-tue-1845-yoga", day: "tue", name: "Yoga", start: "18:45", end: "19:45", level: "all", note: "All Levels" },
         { id: "cs-wed-1215-yoga", day: "wed", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels" },
         { id: "cs-thu-1845-pilates", day: "thu", name: "Pilates", start: "18:45", end: "19:45" },
-        { id: "cs-fri-1215-yoga", day: "fri", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels · 原图有遮挡" }
+        { id: "cs-fri-1215-yoga", day: "fri", name: "Yoga", start: "12:15", end: "13:15", level: "all", note: "All Levels · poster was covered" }
       ]
     },
     {
@@ -238,7 +238,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "",
-      bookingNote: "课表海报报名。",
+      bookingNote: "Sign up from the class poster.",
       notes: "",
       classes: [
         { id: "tp-mon-1930-muay", day: "mon", name: "Muay Thai", start: "19:30", end: "20:30" },
@@ -254,9 +254,9 @@ window.AF_SEED = {
       region: "south",
       color: "#8b6cc9",
       whatsapp: "80878131",
-      whatsappLabel: "预约",
+      whatsappLabel: "Book",
       bookingUrl: "",
-      bookingNote: "全体 AF 会员免费，先到先得。WhatsApp 8087 8131 预约。",
+      bookingNote: "Free for all AF members, first come first served. Book via WhatsApp 8087 8131.",
       notes: "",
       classes: [
         { id: "bm-mon-1900-circuit", day: "mon", name: "Metabolic Circuit", start: "19:00", end: "20:00" },
@@ -274,7 +274,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78712&uid=0&id_class_tab=1",
-      bookingNote: "线上预约 WellnessLiving。",
+      bookingNote: "Book online via WellnessLiving.",
       notes: "2026 Group Class Schedule",
       classes: [
         { id: "tm-mon-1800-yoga", day: "mon", name: "Hatha Yoga", start: "18:00", end: "19:00", instructor: "Audrey" },
@@ -306,7 +306,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "",
-      bookingNote: "免费团课。课表海报报名。",
+      bookingNote: "Free group classes. Sign up from the class poster.",
       notes: "",
       classes: [
         { id: "sw-mon-1800-fundamentals", day: "mon", name: "Fitness Fundamentals", start: "18:00", end: "18:30", instructor: "Enrique" },
@@ -343,7 +343,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=81567&uid=0&id_class_tab=1",
-      bookingNote: "线上预约 WellnessLiving / Achieve App。",
+      bookingNote: "Book online via WellnessLiving / Achieve App.",
       notes: "",
       classes: [
         { id: "ppasir-mon-0800-vinyasa", day: "mon", name: "Vinyasa Yoga", start: "08:00", end: "09:00", instructor: "Sadhana" },

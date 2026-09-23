@@ -334,6 +334,37 @@ window.AF_SEED = {
         { id: "sw-sun-1245-stretch", day: "sun", name: "Yoga Stretch", start: "12:45", end: "13:45", instructor: "Yiru" },
         { id: "sw-sun-1400-pump", day: "sun", name: "Les Mills BODYPUMP", start: "14:00", end: "15:00", instructor: "Jex" }
       ]
+    },
+    {
+      id: "potong-pasir",
+      name: "Potong Pasir",
+      region: "central",
+      color: "#9333ea",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=81567&uid=0&id_class_tab=1",
+      bookingNote: "线上预约 WellnessLiving / Achieve App。",
+      notes: "",
+      classes: [
+        { id: "ppasir-mon-0800-vinyasa", day: "mon", name: "Vinyasa Yoga", start: "08:00", end: "09:00", instructor: "Sadhana" },
+        { id: "ppasir-mon-1900-combat", day: "mon", name: "Body Combat", start: "19:00", end: "20:00", instructor: "Robert" },
+        { id: "ppasir-mon-2000-pump", day: "mon", name: "Body Pump", start: "20:00", end: "21:00", instructor: "Zovy" },
+        { id: "ppasir-tue-1200-upper", day: "tue", name: "Upper Body", start: "12:00", end: "13:00", instructor: "Daran" },
+        { id: "ppasir-tue-1900-yoga", day: "tue", name: "Yoga", start: "19:00", end: "20:00", instructor: "Tiffany" },
+        { id: "ppasir-tue-2000-pump", day: "tue", name: "Body Pump", start: "20:00", end: "21:00", instructor: "Christopher" },
+        { id: "ppasir-wed-0800-pilates", day: "wed", name: "Pilates", start: "08:00", end: "09:00", instructor: "Eka" },
+        { id: "ppasir-wed-1900-combat", day: "wed", name: "Body Combat", start: "19:00", end: "20:00", instructor: "Rinaldi" },
+        { id: "ppasir-wed-2000-pump", day: "wed", name: "Body Pump", start: "20:00", end: "21:00", instructor: "Christopher" },
+        { id: "ppasir-thu-1400-combat", day: "thu", name: "Body Combat", start: "14:00", end: "15:00", instructor: "Ema" },
+        { id: "ppasir-thu-1900-combat", day: "thu", name: "Body Combat", start: "19:00", end: "20:00", instructor: "Robert" },
+        { id: "ppasir-thu-2000-zumba", day: "thu", name: "Zumba", start: "20:00", end: "21:00", instructor: "Ema" },
+        { id: "ppasir-fri-1900-yoga", day: "fri", name: "Yoga", start: "19:00", end: "20:00", instructor: "Melody" },
+        { id: "ppasir-fri-2000-combat", day: "fri", name: "Body Combat", start: "20:00", end: "21:00", instructor: "Carrie" },
+        { id: "ppasir-sat-1000-pilates", day: "sat", name: "Pilates", start: "10:00", end: "11:00", instructor: "Val" },
+        { id: "ppasir-sat-1200-combat", day: "sat", name: "Body Combat", start: "12:00", end: "13:00", instructor: "Jon" },
+        { id: "ppasir-sun-1000-vinyasa", day: "sun", name: "Vinyasa Yoga", start: "10:00", end: "11:00", instructor: "Min Yi" },
+        { id: "ppasir-sun-1200-combat", day: "sun", name: "Body Combat", start: "12:00", end: "13:00", instructor: "Esther" }
+      ]
     }
   ]
 };

@@ -153,7 +153,7 @@
     if (/pilates/.test(n)) return "pilates";
     if (/yoga|yin|stretch|mobility|myofascial|meditat|sound|yogalate|release/.test(n)) return "yoga";
     if (/combat|boxing|kickbox|muay|bodycombat/.test(n)) return "combat";
-    if (/pump|strength|bar |core|hyrox|power|abt|abs|kettle/.test(n)) return "strength";
+    if (/pump|strength|bar |core|hyrox|power|abt|abs|kettle|upper/.test(n)) return "strength";
     if (/zumba|dance|kpop|choreography|bounce/.test(n)) return "dance";
     if (/cycl|spin/.test(n)) return "cycle";
     if (/hiit|cardio|circuit|functional|attack|run|hybrid|fundamental/.test(n)) return "cardio";

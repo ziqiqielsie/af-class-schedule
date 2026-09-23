@@ -1,4 +1,4 @@
-const CACHE = "af-classes-v16";
+const CACHE = "af-classes-v17";
 const ASSETS = [
   "./",
   "./index.html",

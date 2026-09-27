@@ -109,6 +109,11 @@
         }
       }
       if (gym.whatsappLabel === "预约") gym.whatsappLabel = "Book";
+      if (seeded.scheduleRev && gym.scheduleRev !== seeded.scheduleRev) {
+        gym.classes = structuredClone(seeded.classes);
+        gym.scheduleRev = seeded.scheduleRev;
+        if (seeded.bookingNote) gym.bookingNote = seeded.bookingNote;
+      }
     }
     return data;
   }

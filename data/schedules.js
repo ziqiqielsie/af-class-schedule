@@ -139,7 +139,8 @@ window.AF_SEED = {
       color: "#06b6d4",
       whatsapp: "98396017",
       whatsappLabel: "Book",
-      bookingNote: "Book via WhatsApp 9839 6017.",
+      scheduleRev: 2,
+      bookingNote: "Book via WhatsApp 9839 6017. Cancel directly on 9839 6017.",
       notes: "",
       classes: [
         { id: "pp-mon-0700-pilates", day: "mon", name: "Pilates", start: "07:00", end: "08:00", instructor: "Levian" },
@@ -153,6 +154,8 @@ window.AF_SEED = {
         { id: "pp-tue-1900-pump", day: "tue", name: "Les Mills BODYPUMP", start: "19:00", end: "20:00", instructor: "Jacky" },
         { id: "pp-tue-1940-meditation", day: "tue", name: "Meditation & Sound Bath", start: "19:40", end: "20:40", instructor: "Gerald", note: "New location" },
         { id: "pp-tue-2000-combat", day: "tue", name: "Les Mills BODYCOMBAT", start: "20:00", end: "21:00", instructor: "Jacky" },
+        { id: "pp-wed-1230-pump", day: "wed", name: "Les Mills BODYPUMP", start: "12:30", end: "13:20", instructor: "Gerald" },
+        { id: "pp-wed-1330-stretch", day: "wed", name: "Deep Stretch Therapy", start: "13:30", end: "14:30", instructor: "Gerald", note: "New location" },
         { id: "pp-wed-1830-yoga", day: "wed", name: "Yoga", start: "18:30", end: "19:30", instructor: "Amanda", note: "New location" },
         { id: "pp-wed-1840-pump", day: "wed", name: "Les Mills BODYPUMP", start: "18:40", end: "19:40", instructor: "Jasmin" },
         { id: "pp-wed-1940-stretch", day: "wed", name: "Yoga Stretch", start: "19:40", end: "20:40", instructor: "Amanda", note: "New location" },
@@ -161,7 +164,6 @@ window.AF_SEED = {
         { id: "pp-thu-1830-combat", day: "thu", name: "Les Mills BODYCOMBAT", start: "18:30", end: "19:30", instructor: "Levian" },
         { id: "pp-thu-1930-dance", day: "thu", name: "Choreography Dance", start: "19:30", end: "20:30", instructor: "Ah Thong" },
         { id: "pp-thu-1930-pilates", day: "thu", name: "Pilates", start: "19:30", end: "20:30", instructor: "Levian" },
-        { id: "pp-fri-0800-pump", day: "fri", name: "Les Mills BODYPUMP", start: "08:00", end: "09:00", instructor: "Jason" },
         { id: "pp-fri-1215-kickboxing", day: "fri", name: "Kickboxing", start: "12:15", end: "12:45", instructor: "Peter" },
         { id: "pp-fri-1830-pump", day: "fri", name: "Les Mills BODYPUMP", start: "18:30", end: "19:30", instructor: "Jasmin" },
         { id: "pp-fri-1940-combat", day: "fri", name: "Les Mills BODYCOMBAT", start: "19:40", end: "20:40", instructor: "Jovan" },
@@ -171,7 +173,7 @@ window.AF_SEED = {
         { id: "pp-sat-1330-bounce", day: "sat", name: "Bounce Fit", start: "13:30", end: "14:30", instructor: "Irene Tan" },
         { id: "pp-sun-1100-yoga", day: "sun", name: "Yoga Stretch & Twist", start: "11:00", end: "12:00", instructor: "Amanda" },
         { id: "pp-sun-1215-pump", day: "sun", name: "Les Mills BODYPUMP", start: "12:15", end: "13:15", instructor: "Anthony" },
-        { id: "pp-sun-1330-kpop", day: "sun", name: "KPOP Fitness", start: "13:30", end: "14:30", instructor: "Uniee" }
+        { id: "pp-sun-1330-combat", day: "sun", name: "Les Mills BODYCOMBAT", start: "13:30", end: "14:30", instructor: "Anthony" }
       ]
     },
     {

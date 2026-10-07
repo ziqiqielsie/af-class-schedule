@@ -215,11 +215,21 @@
     }, 2200);
   }
 
+  function classFromYmd(item) {
+    return String(item?.from || "").slice(0, 10);
+  }
+
+  function isClassStarted(item) {
+    const from = classFromYmd(item);
+    return !from || singaporeYmd() >= from;
+  }
+
   function allClassesForDay(dayId) {
     const rows = [];
     for (const gym of filteredGyms()) {
       for (const item of gym.classes || []) {
         if (item.day !== dayId) continue;
+        if (!isClassStarted(item)) continue;
         if (!matchesQuery(gym, item) || !matchesKind(item)) continue;
         rows.push({ gym, item });
       }
@@ -308,11 +318,18 @@
     return utc.toISOString().slice(0, 10);
   }
 
-  function nextYmdForDay(dayId) {
+  function weekdayJsForYmd(ymd) {
+    const [year, month, day] = ymd.split("-").map(Number);
+    return new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  }
+
+  function nextYmdForDay(dayId, notBefore) {
     const today = singaporeYmd();
-    const todayJs = DAYS.find((day) => day.id === todayId())?.js ?? 1;
+    const from = String(notBefore || "").slice(0, 10);
+    const start = from && from > today ? from : today;
+    const startJs = weekdayJsForYmd(start);
     const want = DAYS.find((day) => day.id === dayId)?.js ?? 1;
-    return addDaysYmd(today, (want - todayJs + 7) % 7);
+    return addDaysYmd(start, (want - startJs + 7) % 7);
   }
 
   function compactStamp(ymd, hhmm) {
@@ -332,12 +349,13 @@
       item.instructor ? `Coach: ${item.instructor}` : "",
       item.note ? item.note : "",
       gym.bookingNote || "",
+      item.from && !isClassStarted(item) ? `Starts ${item.from}` : "",
       `Every ${dayFull(item.day)} ${item.start}–${item.end}`
     ].filter(Boolean).join("\n");
   }
 
   function googleCalUrl(gym, item) {
-    const ymd = nextYmdForDay(item.day);
+    const ymd = nextYmdForDay(item.day, item.from);
     const rrule = DAYS.find((day) => day.id === item.day)?.rrule || "MO";
     const params = new URLSearchParams({
       text: eventTitle(gym, item),
@@ -374,7 +392,7 @@
   }
 
   function veventFor(gym, item) {
-    const ymd = nextYmdForDay(item.day);
+    const ymd = nextYmdForDay(item.day, item.from);
     const rrule = DAYS.find((day) => day.id === item.day)?.rrule || "MO";
     return [
       "BEGIN:VEVENT",

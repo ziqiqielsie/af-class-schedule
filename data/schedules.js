@@ -367,6 +367,21 @@ window.AF_SEED = {
         { id: "ppasir-sun-1000-vinyasa", day: "sun", name: "Vinyasa Yoga", start: "10:00", end: "11:00", instructor: "Min Yi" },
         { id: "ppasir-sun-1200-combat", day: "sun", name: "Body Combat", start: "12:00", end: "13:00", instructor: "Esther" }
       ]
+    },
+    {
+      id: "dhoby-ghaut",
+      name: "Dhoby Ghaut",
+      region: "central",
+      color: "#3d7ea6",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingUrl: "",
+      bookingNote: "",
+      notes: "",
+      classes: [
+        { id: "dg-tue-1900-hiit", day: "tue", name: "HIIT", start: "19:00", end: "20:00", from: "2026-10-20", note: "From 20 Oct" },
+        { id: "dg-thu-1900-stretch", day: "thu", name: "Stretch & Mobility", start: "19:00", end: "20:00" }
+      ]
     }
   ]
 };

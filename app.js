@@ -178,9 +178,14 @@
     return state.data.gyms.find((gym) => gym.id === id);
   }
 
+  function gymsByName(list = state.data.gyms) {
+    return [...list].sort((a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
+  }
+
   function filteredGyms() {
-    if (!state.gymFilters.length) return state.data.gyms;
-    return state.data.gyms.filter((gym) => state.gymFilters.includes(gym.id));
+    const gyms = gymsByName();
+    if (!state.gymFilters.length) return gyms;
+    return gyms.filter((gym) => state.gymFilters.includes(gym.id));
   }
 
   function matchesQuery(gym, item) {
@@ -544,7 +549,7 @@
 
   function renderGymChips() {
     const chips = [`<button class="chip ${state.gymFilters.length === 0 ? "active" : ""}" data-gym-filter="all">All</button>`]
-      .concat(state.data.gyms.map((gym) => `
+      .concat(gymsByName().map((gym) => `
         <button class="chip ${state.gymFilters.includes(gym.id) ? "active" : ""}" data-gym-filter="${escapeHtml(gym.id)}" style="--chip:${gym.color}">
           ${escapeHtml(gym.name)}
         </button>
@@ -658,7 +663,7 @@
       </div>
       <p class="hint">Edits stay in this browser. Export JSON to keep a backup or move phones. You can also paste the export into <code>data/schedules.js</code> as the new default timetable.</p>
       ${isDirty() ? `<div class="meta-row"><span class="pill">Local edits not written back to the default file</span></div>` : ""}
-      ${state.data.gyms.map(renderGymManage).join("") || emptyHtml("No gyms yet.", "sit")}
+      ${gymsByName().map(renderGymManage).join("") || emptyHtml("No gyms yet.", "sit")}
     `;
   }
 

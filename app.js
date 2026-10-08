@@ -602,8 +602,8 @@
           <div class="class-meta">
             ${escapeHtml(gym.name)}
             ${item.instructor ? ` · ${escapeHtml(item.instructor)}` : ""}
-            ${item.note ? ` · ${escapeHtml(item.note)}` : ""}
           </div>
+          ${item.note ? `<div class="class-note">${escapeHtml(item.note)}</div>` : ""}
           <div class="card-actions">
             ${bookLinksHtml(gym, item)}
             <button type="button" class="wa-link" data-cal-class="${escapeHtml(gym.id)}::${escapeHtml(item.id)}">Add to calendar</button>

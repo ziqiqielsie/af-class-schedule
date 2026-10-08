@@ -63,6 +63,7 @@ window.AF_SEED = {
       whatsappLabel: "",
       bookingUrl: "",
       bookingNote: "Sign up via the WhatsApp QR on the class poster.",
+      scheduleRev: 1,
       notes: "",
       classes: [
         { id: "ch-mon-1800-pilates", day: "mon", name: "Pilates", start: "18:00", end: "18:55" },
@@ -72,7 +73,7 @@ window.AF_SEED = {
         { id: "ch-tue-1900-combat", day: "tue", name: "Body Combat", start: "19:00", end: "20:00" },
         { id: "ch-wed-1900-muay", day: "wed", name: "Muay Thai", start: "19:00", end: "20:00" },
         { id: "ch-thu-1200-pilates", day: "thu", name: "Mobility Pilates", start: "12:00", end: "13:00" },
-        { id: "ch-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00" },
+        { id: "ch-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00", note: "Beginner · very gentle" },
         { id: "ch-fri-1200-release", day: "fri", name: "Release & Restore", start: "12:00", end: "13:00", note: "New" },
         { id: "ch-fri-1900-zumba", day: "fri", name: "Zumba", start: "19:00", end: "20:00" },
         { id: "ch-sat-1100-combat", day: "sat", name: "Body Combat", start: "11:00", end: "12:00" }

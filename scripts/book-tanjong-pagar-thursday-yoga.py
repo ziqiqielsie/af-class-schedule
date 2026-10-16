@@ -177,39 +177,48 @@ def is_waitlist_status(status: str) -> bool:
     return "wait" in (status or "").lower()
 
 
-def notify_phone() -> str:
-    raw = os.environ.get("AF_NOTIFY_WHATSAPP", "").strip() or os.environ.get("AF_BOOKING_WHATSAPP", "").strip()
-    digits = "".join(ch for ch in raw if ch.isdigit())
-    if digits.startswith("65") and len(digits) >= 10:
-        return digits
-    if len(digits) == 8:
-        return "65" + digits
-    return digits
-
-
-def notify_whatsapp(text: str) -> None:
-    apikey = os.environ.get("AF_CALLMEBOT_APIKEY", "").strip()
-    if not apikey:
-        print("WhatsApp notify skipped (no AF_CALLMEBOT_APIKEY).", flush=True)
-        return
-    phone = notify_phone()
-    if len(phone) < 10:
-        print("WhatsApp notify skipped (need a number with country code, e.g. 65...).", flush=True)
-        return
-    url = "https://api.callmebot.com/whatsapp.php?" + urllib.parse.urlencode(
-        {"phone": phone, "text": text, "apikey": apikey}
-    )
+def telegram_request(token: str, method: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    url = f"https://api.telegram.org/bot{token}/{method}"
+    data = None
+    headers = {"Accept": "application/json"}
+    if payload is not None:
+        data = json.dumps(payload).encode("utf-8")
+        headers["Content-Type"] = "application/json"
+    req = urllib.request.Request(url, data=data, headers=headers, method="POST" if payload else "GET")
     try:
-        with urllib.request.urlopen(url, timeout=45) as res:
-            body = res.read().decode("utf-8", errors="replace")
-            print(f"WhatsApp notify sent ({res.status}).", flush=True)
-            if body:
-                print(body[:200], flush=True)
+        with urllib.request.urlopen(req, timeout=30) as res:
+            return json.loads(res.read().decode("utf-8"))
     except urllib.error.HTTPError as err:
         raw = err.read().decode("utf-8", errors="replace")
-        print(f"WhatsApp notify failed: {err.code} {raw[:200]}", flush=True)
+        raise RuntimeError(raw[:300] or err.reason) from err
+
+
+def resolve_telegram_chat_id(token: str) -> str:
+    chat_id = os.environ.get("AF_TELEGRAM_CHAT_ID", "").strip()
+    if chat_id:
+        return chat_id
+    data = telegram_request(token, "getUpdates")
+    for update in data.get("result") or []:
+        chat = ((update.get("message") or update.get("edited_message") or {}).get("chat") or {})
+        if chat.get("id") is not None:
+            return str(chat["id"])
+    raise RuntimeError("No Telegram chat found. Open your bot, send /start, then set AF_TELEGRAM_CHAT_ID.")
+
+
+def notify_telegram(text: str) -> None:
+    token = os.environ.get("AF_TELEGRAM_BOT_TOKEN", "").strip()
+    if not token:
+        print("Telegram notify skipped (no AF_TELEGRAM_BOT_TOKEN).", flush=True)
+        return
+    try:
+        chat_id = resolve_telegram_chat_id(token)
+        data = telegram_request(token, "sendMessage", {"chat_id": chat_id, "text": text})
+        if data.get("ok"):
+            print("Telegram notify sent.", flush=True)
+        else:
+            print(f"Telegram notify failed: {data.get('description') or data}", flush=True)
     except Exception as err:
-        print(f"WhatsApp notify failed: {err}", flush=True)
+        print(f"Telegram notify failed: {str(err).replace(token, '***')}", flush=True)
 
 
 def notify_booking(kind: str, cls: dict[str, Any], extra: str = "") -> None:
@@ -224,18 +233,18 @@ def notify_booking(kind: str, cls: dict[str, Any], extra: str = "") -> None:
         text = f"{kind}\n{line}"
     if extra:
         text += f"\n{extra}"
-    notify_whatsapp(text)
+    notify_telegram(text)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Book Tanjong Pagar Thursday Yoga")
     parser.add_argument("--dry-run", action="store_true", help="Login and find the class, but do not book")
     parser.add_argument("--no-wait", action="store_true", help="Fail instead of waiting if booking is still locked")
-    parser.add_argument("--notify-test", action="store_true", help="Send a WhatsApp test message and exit")
+    parser.add_argument("--notify-test", action="store_true", help="Send a Telegram test message and exit")
     args = parser.parse_args()
 
     if args.notify_test:
-        notify_whatsapp("AF booker test: WhatsApp notifications are working.")
+        notify_telegram("AF booker test: Telegram notifications are working.")
         return 0
 
     email, phone = credentials()

@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       notify_test:
-        description: Send a WhatsApp test message instead of booking
+        description: Send a Telegram test message instead of booking
         type: boolean
         default: false
 
@@ -20,7 +20,8 @@ jobs:
         env:
           AF_BOOKING_EMAIL: ${{ secrets.AF_BOOKING_EMAIL }}
           AF_BOOKING_WHATSAPP: ${{ secrets.AF_BOOKING_WHATSAPP }}
-          AF_CALLMEBOT_APIKEY: ${{ secrets.AF_CALLMEBOT_APIKEY }}
+          AF_TELEGRAM_BOT_TOKEN: ${{ secrets.AF_TELEGRAM_BOT_TOKEN }}
+          AF_TELEGRAM_CHAT_ID: ${{ secrets.AF_TELEGRAM_CHAT_ID }}
         run: |
           if [ "${{ github.event.inputs.notify_test }}" = "true" ]; then
             python3 scripts/book-tanjong-pagar-thursday-yoga.py --notify-test

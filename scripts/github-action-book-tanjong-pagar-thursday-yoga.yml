@@ -1,0 +1,23 @@
+name: Book Tanjong Pagar Thursday Yoga
+
+on:
+  schedule:
+    # 13:55 Saturday SGT = 05:55 UTC
+    - cron: "55 5 * * 6"
+  workflow_dispatch:
+
+jobs:
+  book:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Book class
+        env:
+          AF_BOOKING_EMAIL: ${{ secrets.AF_BOOKING_EMAIL }}
+          AF_BOOKING_WHATSAPP: ${{ secrets.AF_BOOKING_WHATSAPP }}
+        run: |
+          if [ -z "$AF_BOOKING_EMAIL" ] || [ -z "$AF_BOOKING_WHATSAPP" ]; then
+            echo "Add repository secrets AF_BOOKING_EMAIL and AF_BOOKING_WHATSAPP first."
+            exit 1
+          fi
+          python3 scripts/book-tanjong-pagar-thursday-yoga.py

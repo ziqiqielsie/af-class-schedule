@@ -8,6 +8,7 @@ Uses your own member login (email + WhatsApp number). Does not store the passwor
 
   python3 scripts/book-tanjong-pagar-thursday-yoga.py --dry-run
   python3 scripts/book-tanjong-pagar-thursday-yoga.py --no-wait
+  python3 scripts/book-tanjong-pagar-thursday-yoga.py --notify-test
 """
 
 from __future__ import annotations
@@ -165,11 +166,77 @@ def describe(cls: dict[str, Any]) -> str:
     )
 
 
+def class_line(cls: dict[str, Any]) -> str:
+    return (
+        f"{cls.get('title')} · {cls.get('club_name')} · {cls.get('class_date')} "
+        f"{cls.get('start_time')}–{cls.get('end_time')}"
+    )
+
+
+def is_waitlist_status(status: str) -> bool:
+    return "wait" in (status or "").lower()
+
+
+def notify_phone() -> str:
+    raw = os.environ.get("AF_NOTIFY_WHATSAPP", "").strip() or os.environ.get("AF_BOOKING_WHATSAPP", "").strip()
+    digits = "".join(ch for ch in raw if ch.isdigit())
+    if digits.startswith("65") and len(digits) >= 10:
+        return digits
+    if len(digits) == 8:
+        return "65" + digits
+    return digits
+
+
+def notify_whatsapp(text: str) -> None:
+    apikey = os.environ.get("AF_CALLMEBOT_APIKEY", "").strip()
+    if not apikey:
+        print("WhatsApp notify skipped (no AF_CALLMEBOT_APIKEY).", flush=True)
+        return
+    phone = notify_phone()
+    if len(phone) < 10:
+        print("WhatsApp notify skipped (need a number with country code, e.g. 65...).", flush=True)
+        return
+    url = "https://api.callmebot.com/whatsapp.php?" + urllib.parse.urlencode(
+        {"phone": phone, "text": text, "apikey": apikey}
+    )
+    try:
+        with urllib.request.urlopen(url, timeout=45) as res:
+            body = res.read().decode("utf-8", errors="replace")
+            print(f"WhatsApp notify sent ({res.status}).", flush=True)
+            if body:
+                print(body[:200], flush=True)
+    except urllib.error.HTTPError as err:
+        raw = err.read().decode("utf-8", errors="replace")
+        print(f"WhatsApp notify failed: {err.code} {raw[:200]}", flush=True)
+    except Exception as err:
+        print(f"WhatsApp notify failed: {err}", flush=True)
+
+
+def notify_booking(kind: str, cls: dict[str, Any], extra: str = "") -> None:
+    line = class_line(cls)
+    if kind == "confirmed":
+        text = f"预约成功\n{line}"
+    elif kind == "waitlist":
+        text = f"已加入 waitlist\n{line}"
+    elif kind == "full":
+        text = f"正课和 waitlist 都满了\n{line}"
+    else:
+        text = f"{kind}\n{line}"
+    if extra:
+        text += f"\n{extra}"
+    notify_whatsapp(text)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Book Tanjong Pagar Thursday Yoga")
     parser.add_argument("--dry-run", action="store_true", help="Login and find the class, but do not book")
     parser.add_argument("--no-wait", action="store_true", help="Fail instead of waiting if booking is still locked")
+    parser.add_argument("--notify-test", action="store_true", help="Send a WhatsApp test message and exit")
     args = parser.parse_args()
+
+    if args.notify_test:
+        notify_whatsapp("AF booker test: WhatsApp notifications are working.")
+        return 0
 
     email, phone = credentials()
     client = BookingClient()
@@ -208,6 +275,7 @@ def main() -> int:
             return 0
 
         if target.get("is_full") and target.get("is_waitlist_full"):
+            notify_booking("full", target)
             raise SystemExit("Class and waitlist are both full.")
 
         try:
@@ -228,8 +296,11 @@ def main() -> int:
         booking = result.get("booking") or result
         status = booking.get("status") or booking.get("state") or "confirmed"
         print(f"Booked: {status}")
+        extra = f"status: {status}"
         if booking.get("booking_code"):
             print(f"Code: {booking['booking_code']}")
+            extra += f"\ncode: {booking['booking_code']}"
+        notify_booking("waitlist" if is_waitlist_status(str(status)) else "confirmed", target, extra)
         return 0
 
 

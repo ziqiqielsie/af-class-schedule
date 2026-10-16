@@ -240,8 +240,8 @@ window.AF_SEED = {
       color: "#d9488c",
       whatsapp: "",
       whatsappLabel: "",
-      bookingUrl: "",
-      bookingNote: "Sign up from the class poster.",
+      bookingUrl: "https://af-class-booking.fly.dev",
+      bookingNote: "Book online.",
       notes: "",
       classes: [
         { id: "tp-mon-1930-muay", day: "mon", name: "Muay Thai", start: "19:30", end: "20:30" },

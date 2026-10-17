@@ -221,19 +221,96 @@ def notify_telegram(text: str) -> None:
         print(f"Telegram notify failed: {str(err).replace(token, '***')}", flush=True)
 
 
-def notify_booking(kind: str, cls: dict[str, Any], extra: str = "") -> None:
-    line = class_line(cls)
-    if kind == "confirmed":
-        text = f"预约成功\n{line}"
-    elif kind == "waitlist":
-        text = f"已加入 waitlist\n{line}"
-    elif kind == "full":
-        text = f"正课和 waitlist 都满了\n{line}"
-    else:
-        text = f"{kind}\n{line}"
-    if extra:
-        text += f"\n{extra}"
-    notify_telegram(text)
+def trigger_label() -> str:
+    event = os.environ.get("GITHUB_EVENT_NAME", "").strip()
+    if event == "schedule":
+        return "GitHub 定时"
+    if event == "workflow_dispatch":
+        return "cron-job.org / 手动"
+    if event:
+        return event
+    return "本地运行"
+
+
+def format_report(detail: str) -> str:
+    return (
+        "预约脚本已执行\n"
+        f"时间: {sgt_now():%a %d %b %H:%M SGT}\n"
+        f"触发: {trigger_label()}\n"
+        f"{detail.strip()}"
+    )
+
+
+def book_class(args: argparse.Namespace) -> tuple[int, str]:
+    email, phone = credentials()
+    client = BookingClient()
+    participant = client.login(email, phone)
+    who = participant.get("name") or email
+    print(f"Logged in as {who}", flush=True)
+
+    polls = 0
+    while True:
+        classes = client.classes(participant)
+        if participant.get("is_suspended"):
+            return 1, f"登录成功（{who}）\n会员资料被暂停，无法预约。"
+        target = pick_class(classes)
+        if not target:
+            return 1, f"登录成功（{who}）\n没有找到即将到来的 Tanjong Pagar 周四 Yoga。"
+
+        print(describe(target), flush=True)
+        line = class_line(target)
+        if target.get("is_user_enrolled") or target.get("user_booking"):
+            booking = target.get("user_booking") or {}
+            status = booking.get("status") or "enrolled"
+            print(f"Already on this class ({status}).")
+            return 0, f"登录成功（{who}）\n已经约上（{status}）\n{line}"
+
+        if target.get("is_booking_open") is False:
+            opens = parse_iso(target.get("booking_opens_at")) or next_saturday_2pm_sgt()
+            if args.no_wait:
+                return 1, (
+                    f"登录成功（{who}）\n"
+                    f"预约还没开放，锁定到 {opens.astimezone(SGT):%a %d %b %H:%M SGT}\n{line}"
+                )
+            wait_until(opens)
+            polls += 1
+            if polls > MAX_POLLS:
+                return 1, f"登录成功（{who}）\n等到超时，课还没开放\n{line}"
+            time.sleep(1)
+            continue
+
+        if args.dry_run:
+            print("Dry run: would book this class now.")
+            return 0, f"登录成功（{who}）\n试运行：现在可以预约，没有提交\n{line}"
+
+        if target.get("is_full") and target.get("is_waitlist_full"):
+            return 1, f"登录成功（{who}）\n正课和 waitlist 都满了\n{line}"
+
+        try:
+            result = client.book(int(target["id"]), participant, phone)
+        except RuntimeError as err:
+            message = str(err)
+            if "not open" in message.lower() or "locked" in message.lower():
+                if args.no_wait:
+                    return 1, f"登录成功（{who}）\n预约失败：{message}\n{line}"
+                print(message, flush=True)
+                time.sleep(POLL_SECONDS)
+                polls += 1
+                if polls > MAX_POLLS:
+                    return 1, f"登录成功（{who}）\n等到超时，课还没开放\n{line}"
+                continue
+            return 1, f"登录成功（{who}）\n预约失败：{message}\n{line}"
+
+        booking = result.get("booking") or result
+        status = booking.get("status") or booking.get("state") or "confirmed"
+        print(f"Booked: {status}")
+        extra = f"status: {status}"
+        if booking.get("booking_code"):
+            print(f"Code: {booking['booking_code']}")
+            extra += f"\ncode: {booking['booking_code']}"
+        if is_waitlist_status(str(status)):
+            return 0, f"登录成功（{who}）\n已加入 waitlist（{status}）\n{line}\n{extra}"
+        return 0, f"登录成功（{who}）\n预约成功（{status}）\n{line}\n{extra}"
 
 
 def main() -> int:
@@ -244,77 +321,30 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.notify_test:
-        notify_telegram("AF booker test: Telegram notifications are working.")
+        notify_telegram(format_report("测试通知：Telegram 正常。"))
         return 0
 
-    email, phone = credentials()
-    client = BookingClient()
-    participant = client.login(email, phone)
-    print(f"Logged in as {participant.get('name') or email}", flush=True)
-
-    polls = 0
-    while True:
-        classes = client.classes(participant)
-        if participant.get("is_suspended"):
-            raise SystemExit("This member profile is suspended and cannot book.")
-        target = pick_class(classes)
-        if not target:
-            raise SystemExit("No upcoming Tanjong Pagar Thursday Yoga session was found.")
-
-        print(describe(target), flush=True)
-        if target.get("is_user_enrolled") or target.get("user_booking"):
-            booking = target.get("user_booking") or {}
-            status = booking.get("status") or "enrolled"
-            print(f"Already on this class ({status}).")
-            return 0
-
-        if target.get("is_booking_open") is False:
-            opens = parse_iso(target.get("booking_opens_at")) or next_saturday_2pm_sgt()
-            if args.no_wait:
-                raise SystemExit(f"Booking is locked until {opens.astimezone(SGT):%a %d %b %H:%M SGT}.")
-            wait_until(opens)
-            polls += 1
-            if polls > MAX_POLLS:
-                raise SystemExit("Timed out waiting for the class to open.")
-            time.sleep(1)
-            continue
-
-        if args.dry_run:
-            print("Dry run: would book this class now.")
-            return 0
-
-        if target.get("is_full") and target.get("is_waitlist_full"):
-            notify_booking("full", target)
-            raise SystemExit("Class and waitlist are both full.")
-
-        try:
-            result = client.book(int(target["id"]), participant, phone)
-        except RuntimeError as err:
-            message = str(err)
-            if "not open" in message.lower() or "locked" in message.lower():
-                if args.no_wait:
-                    raise
-                print(message, flush=True)
-                time.sleep(POLL_SECONDS)
-                polls += 1
-                if polls > MAX_POLLS:
-                    raise SystemExit("Timed out waiting for the class to open.")
-                continue
-            raise
-
-        booking = result.get("booking") or result
-        status = booking.get("status") or booking.get("state") or "confirmed"
-        print(f"Booked: {status}")
-        extra = f"status: {status}"
-        if booking.get("booking_code"):
-            print(f"Code: {booking['booking_code']}")
-            extra += f"\ncode: {booking['booking_code']}"
-        notify_booking("waitlist" if is_waitlist_status(str(status)) else "confirmed", target, extra)
-        return 0
+    code = 1
+    detail = "执行结束，没有详细结果。"
+    try:
+        code, detail = book_class(args)
+    except SystemExit as err:
+        if err.code in (0, None):
+            code, detail = 0, "已结束。"
+        else:
+            text = err.code if isinstance(err.code, str) else (err.args[0] if err.args else str(err.code))
+            code = err.code if isinstance(err.code, int) else 1
+            detail = f"未完成\n{text}"
+    except Exception as err:
+        code = 1
+        detail = f"出错了\n{err}"
+    notify_telegram(format_report(detail))
+    return code
 
 
 if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except KeyboardInterrupt:
+        notify_telegram(format_report("已停止。"))
         raise SystemExit("\nStopped.")

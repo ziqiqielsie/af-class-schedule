@@ -346,7 +346,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=81567&uid=0&id_class_tab=1",
-      scheduleRev: 1,
+      scheduleRev: 2,
       bookingNote: "Book via the Wellness Living Achieve App.",
       notes: "",
       classes: [
@@ -358,7 +358,7 @@ window.AF_SEED = {
         { id: "ppasir-wed-1300-pilates", day: "wed", name: "Pilates", start: "13:00", end: "14:00", instructor: "Eka" },
         { id: "ppasir-wed-1900-combat", day: "wed", name: "Body Combat", start: "19:00", end: "20:00", instructor: "Rinaldi" },
         { id: "ppasir-wed-2000-pump", day: "wed", name: "Body Pump", start: "20:00", end: "21:00", instructor: "Christopher" },
-        { id: "ppasir-thu-1800-pump", day: "thu", name: "Body Pump", start: "18:00", end: "19:00", instructor: "Eka" },
+        { id: "ppasir-thu-1800-pump", day: "thu", name: "Body Pump", start: "18:00", end: "19:00", instructor: "Ema" },
         { id: "ppasir-thu-1900-combat", day: "thu", name: "Body Combat", start: "19:00", end: "20:00", instructor: "Robert" },
         { id: "ppasir-thu-2000-zumba", day: "thu", name: "Zumba", start: "20:00", end: "21:00", instructor: "Ema" },
         { id: "ppasir-fri-1900-yoga", day: "fri", name: "Yoga", start: "19:00", end: "20:00", instructor: "Melody" },

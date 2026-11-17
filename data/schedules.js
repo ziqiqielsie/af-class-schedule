@@ -40,7 +40,7 @@ window.AF_SEED = {
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78649&uid=0&id_class_tab=1",
       bookingNote: "Book online via WellnessLiving.",
-      scheduleRev: 3,
+      scheduleRev: 4,
       notes: "",
       classes: [
         { id: "dh-tue-1830-yoga", day: "tue", name: "Yoga", start: "18:30", end: "19:15", instructor: "Alvelyn" },
@@ -51,6 +51,7 @@ window.AF_SEED = {
         { id: "dh-thu-1830-cardio", day: "thu", name: "Cardio", start: "18:30", end: "19:15", instructor: "Alvelyn" },
         { id: "dh-thu-1915-abt", day: "thu", name: "Strength/ABT", start: "19:15", end: "20:00", instructor: "Alvelyn" },
         { id: "dh-thu-2000-myo", day: "thu", name: "Myofascial Ball Release", start: "20:00", end: "20:45", instructor: "Alvelyn" },
+        { id: "dh-fri-1900-run-club", day: "fri", name: "Run Club", start: "19:00", end: "20:15", instructor: "Amirul" },
         { id: "dh-sat-1100-hybrid", day: "sat", name: "Hybrid", start: "11:00", end: "12:00", instructor: "Alvelyn" },
         { id: "dh-sat-1200-stretch", day: "sat", name: "Deep Stretch", start: "12:00", end: "13:00", instructor: "Alvelyn" },
         { id: "dh-sat-1400-kickboxing", day: "sat", name: "Kickboxing", start: "14:00", end: "15:00", instructor: "Bronson" }
@@ -283,13 +284,12 @@ window.AF_SEED = {
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78712&uid=0&id_class_tab=1",
       bookingNote: "Book online via WellnessLiving.",
-      scheduleRev: 3,
+      scheduleRev: 4,
       notes: "2026 Group Class Schedule",
       classes: [
         { id: "tm-mon-1815-yoga", day: "mon", name: "Hatha Yoga", start: "18:15", end: "19:15", instructor: "Audrey" },
         { id: "tm-mon-1930-combat", day: "mon", name: "Body Combat", start: "19:30", end: "20:30", instructor: "Jun Yee" },
         { id: "tm-mon-2030-pump", day: "mon", name: "Body Pump", start: "20:30", end: "21:30", instructor: "Yoshiko" },
-        { id: "tm-tue-1830-zumba", day: "tue", name: "Zumba", start: "18:30", end: "19:30", instructor: "Lena" },
         { id: "tm-tue-1930-yoga", day: "tue", name: "Hatha Yoga", start: "19:30", end: "20:30", instructor: "Audrey" },
         { id: "tm-tue-2040-ride", day: "tue", name: "Ride & Lift", start: "20:40", end: "21:40", instructor: "Debra" },
         { id: "tm-wed-1830-combat", day: "wed", name: "Body Combat", start: "18:30", end: "19:30", instructor: "Jun Yee" },

@@ -61,8 +61,8 @@ MONTHS = {
 }
 CLASS_FIELDS = ("id", "day", "name", "start", "end", "instructor", "level", "from", "note")
 GYM_SUFFIX = re.compile(
-    r"\s*(?:\((?:MB|DH|Tampines|Potong Pasir|Depot Heights|Mountbatten)\)|"
-    r"(?:Tampines|Potong Pasir|Depot Heights|Mountbatten))\s*$",
+    r"\s*(?:[-–]\s*)?(?:\((?:MB|DH|Tampines|Potong Pasir|Depot Heights|Mountbatten)\)|"
+    r"(?:Tampines|Potong Pasir|Depot Heights|Mountbatten|DH|MB))\s*$",
     re.I,
 )
 DATE_LINE = re.compile(r"^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), ([A-Z][a-z]{2}) (\d{1,2}), (\d{4})")
@@ -402,12 +402,16 @@ def merge_classes(gym: dict[str, Any], live_sessions: list[dict[str, str]]) -> l
         seed = match_seed(seed_classes, live, used)
         name = seed.get("name") if seed and norm_name(seed.get("name") or "") == norm_name(live["name"]) else live["name"]
         instructor = live.get("instructor") or (seed.get("instructor") if seed else "") or ""
+        end = live["end"] or add_minutes(live["start"], 60)
+        seed_end = str((seed or {}).get("end") or "")[:5]
+        if seed and seed_end and str((seed.get("start") or ""))[:5] == live["start"] and end == add_minutes(live["start"], 60) and seed_end != end:
+            end = seed_end
         item = {
             "id": str(seed.get("id") if seed else "") or class_id(prefix, live, used_ids),
             "day": live["day"],
             "name": name or live["name"],
             "start": live["start"],
-            "end": live["end"] or (seed.get("end") if seed else "") or add_minutes(live["start"], 60),
+            "end": end,
         }
         if seed and seed.get("id"):
             used_ids.add(str(seed["id"]))
@@ -466,6 +470,19 @@ def fetch_fly_sessions() -> dict[str, list[dict[str, str]]]:
     return grouped
 
 
+def _wait_week_end(page) -> None:
+    page.wait_for_function(
+        """() => {
+          const button = [...document.querySelectorAll('button')].find(item => /[A-Z][a-z]{2} \\d{1,2}\\s*[–-]\\s*[A-Z][a-z]{2} \\d{1,2}/.test(item.innerText || ''));
+          if (!button) return false;
+          const match = button.innerText.match(/([A-Z][a-z]{2}) (\\d{1,2})\\s*[–-]\\s*([A-Z][a-z]{2}) (\\d{1,2}), (\\d{4})/);
+          if (!match) return false;
+          return document.body.innerText.includes(`${match[3]} ${Number(match[4])}, ${match[5]}`);
+        }""",
+        timeout=30000,
+    )
+
+
 def scrape_wellnessliving(url: str) -> list[dict[str, str]]:
     from playwright.sync_api import sync_playwright
 
@@ -476,8 +493,8 @@ def scrape_wellnessliving(url: str) -> list[dict[str, str]]:
         page.set_default_timeout(60000)
         page.goto(url, wait_until="domcontentloaded")
         page.wait_for_function("() => /(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), /.test(document.body.innerText)", timeout=45000)
-        first = page.evaluate(WL_EXTRACT_JS)
-        page.wait_for_timeout(1200)
+        page.evaluate(WL_EXTRACT_JS)
+        _wait_week_end(page)
         first = page.evaluate(WL_EXTRACT_JS)
         sessions.extend(parse_wl_text(first.get("text") or ""))
         previous = first.get("range") or ""
@@ -493,11 +510,15 @@ def scrape_wellnessliving(url: str) -> list[dict[str, str]]:
             )
         except Exception:
             page.wait_for_timeout(2500)
+        _wait_week_end(page)
         second = page.evaluate(WL_EXTRACT_JS)
         sessions.extend(parse_wl_text(second.get("text") or ""))
         browser.close()
     if not sessions:
         raise RuntimeError(f"No WellnessLiving classes parsed from {url}")
+    weeks = {datetime.fromisoformat(item["date"]).isocalendar()[:2] for item in sessions if item.get("date")}
+    if len(weeks) < 2:
+        raise RuntimeError(f"WellnessLiving returned {len(weeks)} week(s) for {url}; need two weeks before updating")
     return sessions
 
 
@@ -580,6 +601,8 @@ GX AREA
         ("fri", "20:00", "HYROX", "Andy"),
         ("sat", "13:30", "HIIT", "Jerome"),
     ]
+    assert pretty_name("Yoga - Dh") == "Yoga"
+    assert pretty_name("Zumba Tampines") == "Zumba"
     print("self-test ok", flush=True)
 
 

@@ -69,13 +69,27 @@
     return hour * 60 + minute;
   }
 
+  function gymKey(gym) {
+    return String(gym?.id || gym?.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+  }
+
   function loadData() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return structuredClone(seed);
       const parsed = JSON.parse(raw);
       if (!parsed?.gyms) return structuredClone(seed);
-      return mergeSeedBooking(parsed);
+      const before = JSON.stringify(parsed.gyms.map((gym) => [gym.id, gym.name]));
+      const merged = mergeSeedBooking(parsed);
+      const after = JSON.stringify(merged.gyms.map((gym) => [gym.id, gym.name]));
+      if (before !== after) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        } catch {
+          /* ignore quota / private-mode failures */
+        }
+      }
+      return merged;
     } catch {
       return structuredClone(seed);
     }
@@ -86,10 +100,33 @@
   }
 
   function mergeSeedBooking(data) {
-    const existingIds = new Set(data.gyms.map((gym) => gym.id));
-    for (const seeded of seed.gyms) {
-      if (!existingIds.has(seeded.id)) data.gyms.push(structuredClone(seeded));
+    const seedById = new Map(seed.gyms.map((gym) => [gym.id, gym]));
+    const seedByKey = new Map();
+    for (const gym of seed.gyms) {
+      seedByKey.set(gymKey(gym), gym);
+      seedByKey.set(gymKey({ id: gym.name }), gym);
     }
+    const kept = [];
+    const seenSeedIds = new Set();
+    for (const gym of data.gyms || []) {
+      const seeded = seedById.get(gym.id) || seedByKey.get(gymKey(gym)) || seedByKey.get(gymKey({ id: gym.name }));
+      if (seeded) {
+        if (seenSeedIds.has(seeded.id)) continue;
+        gym.id = seeded.id;
+        gym.name = seeded.name;
+        seenSeedIds.add(seeded.id);
+        kept.push(gym);
+        continue;
+      }
+      kept.push(gym);
+    }
+    for (const seeded of seed.gyms) {
+      if (!seenSeedIds.has(seeded.id)) {
+        kept.push(structuredClone(seeded));
+        seenSeedIds.add(seeded.id);
+      }
+    }
+    data.gyms = kept;
     const fromSeed = new Map(seed.gyms.map((gym) => [gym.id, gym]));
     for (const gym of data.gyms) {
       const seeded = fromSeed.get(gym.id);

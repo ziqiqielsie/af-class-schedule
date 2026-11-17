@@ -470,17 +470,15 @@ def fetch_fly_sessions() -> dict[str, list[dict[str, str]]]:
     return grouped
 
 
-def _wait_week_end(page) -> None:
-    page.wait_for_function(
-        """() => {
-          const button = [...document.querySelectorAll('button')].find(item => /[A-Z][a-z]{2} \\d{1,2}\\s*[–-]\\s*[A-Z][a-z]{2} \\d{1,2}/.test(item.innerText || ''));
-          if (!button) return false;
-          const match = button.innerText.match(/([A-Z][a-z]{2}) (\\d{1,2})\\s*[–-]\\s*([A-Z][a-z]{2}) (\\d{1,2}), (\\d{4})/);
-          if (!match) return false;
-          return document.body.innerText.includes(`${match[3]} ${Number(match[4])}, ${match[5]}`);
-        }""",
-        timeout=30000,
-    )
+def _wait_dates(page, minimum: int = 6) -> None:
+    try:
+        page.wait_for_function(
+            """min => (document.body.innerText.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun), /g) || []).length >= min""",
+            arg=minimum,
+            timeout=20000,
+        )
+    except Exception:
+        page.wait_for_timeout(2000)
 
 
 def scrape_wellnessliving(url: str) -> list[dict[str, str]]:
@@ -494,7 +492,7 @@ def scrape_wellnessliving(url: str) -> list[dict[str, str]]:
         page.goto(url, wait_until="domcontentloaded")
         page.wait_for_function("() => /(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), /.test(document.body.innerText)", timeout=45000)
         page.evaluate(WL_EXTRACT_JS)
-        _wait_week_end(page)
+        _wait_dates(page)
         first = page.evaluate(WL_EXTRACT_JS)
         sessions.extend(parse_wl_text(first.get("text") or ""))
         previous = first.get("range") or ""
@@ -510,15 +508,15 @@ def scrape_wellnessliving(url: str) -> list[dict[str, str]]:
             )
         except Exception:
             page.wait_for_timeout(2500)
-        _wait_week_end(page)
+        _wait_dates(page)
         second = page.evaluate(WL_EXTRACT_JS)
         sessions.extend(parse_wl_text(second.get("text") or ""))
         browser.close()
     if not sessions:
-        raise RuntimeError(f"No WellnessLiving classes parsed from {url}")
+        raise RuntimeError("no classes parsed")
     weeks = {datetime.fromisoformat(item["date"]).isocalendar()[:2] for item in sessions if item.get("date")}
     if len(weeks) < 2:
-        raise RuntimeError(f"WellnessLiving returned {len(weeks)} week(s) for {url}; need two weeks before updating")
+        raise RuntimeError(f"only {len(weeks)} week of data")
     return sessions
 
 
@@ -663,7 +661,7 @@ def main() -> int:
             try:
                 sessions = scrape_wellnessliving(str(gym["bookingUrl"]))
             except Exception as err:
-                errors.append(f"{gym['name']}: {err}")
+                notes.append(f"{gym['name']}: skipped ({err})")
                 continue
             merged = merge_classes(gym, sessions)
             if signature(gym.get("classes") or []) == signature(merged):

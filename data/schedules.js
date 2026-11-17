@@ -3,6 +3,7 @@
    export/import JSON so you can add, delete, or replace gyms later. */
 window.AF_SEED = {
   version: 1,
+  lastCheckedAt: "2026-11-18",
   gyms: [
     {
       id: "mountbatten",

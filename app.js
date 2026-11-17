@@ -116,6 +116,7 @@
         if (seeded.bookingUrl) gym.bookingUrl = seeded.bookingUrl;
       }
     }
+    if (seed.lastCheckedAt) data.lastCheckedAt = seed.lastCheckedAt;
     return data;
   }
 
@@ -505,6 +506,20 @@
     `;
   }
 
+  function checkedLabel() {
+    const iso = String(state.data.lastCheckedAt || seed.lastCheckedAt || "").trim();
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+    if (!match) return "";
+    const stamp = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+    const pretty = new Intl.DateTimeFormat("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC"
+    }).format(stamp);
+    return ` · Last checked ${pretty}`;
+  }
+
   function renderHeader() {
     const today = dayFull(todayId());
     return `
@@ -523,7 +538,7 @@
             </div>
           </div>
           <h1>Group Classes</h1>
-          <div class="subtitle">Gym Time · Today is ${today} · Singapore time · ${state.data.gyms.length} gyms</div>
+          <div class="subtitle">Gym Time · Today is ${today} · Singapore time · ${state.data.gyms.length} gyms${checkedLabel()}</div>
         </div>
       </header>
     `;

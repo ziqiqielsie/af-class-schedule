@@ -206,6 +206,13 @@ def upsert_field(block: str, key: str, rendered: str) -> str:
     return re.sub(r"\n(\s*)(notes:|classes:)", rf"\n\1{key}: {rendered},\n\1\2", block, count=1)
 
 
+def stamp_checked(src: str, date_iso: str) -> str:
+    rendered = f'lastCheckedAt: "{date_iso}"'
+    if re.search(r"lastCheckedAt:\s*\"[^\"]*\"", src):
+        return re.sub(r"lastCheckedAt:\s*\"[^\"]*\"", rendered, src, count=1)
+    return re.sub(r"(window\.AF_SEED = \{\n\s*version: \d+,)", rf"\1\n  {rendered},", src, count=1)
+
+
 def write_gym(src: str, gym_id: str, classes: list[dict[str, str]], schedule_rev: int, booking_url: str | None, booking_note: str | None) -> str:
     start, end = gym_block_span(src, gym_id)
     block = src[start:end]
@@ -674,7 +681,8 @@ def main() -> int:
                 src = write_gym(src, gym["id"], merged, next_rev, None, None)
             changed.append(gym["name"])
 
-    if not args.dry_run and changed:
+    if not args.dry_run:
+        src = stamp_checked(src, sgt_now().date().isoformat())
         SEED_PATH.write_text(src, encoding="utf-8")
 
     if errors:

@@ -39,19 +39,20 @@ window.AF_SEED = {
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78649&uid=0&id_class_tab=1",
       bookingNote: "Book online via WellnessLiving.",
-      scheduleRev: 1,
+      scheduleRev: 2,
       notes: "",
       classes: [
-        { id: "dh-tue-1830-yoga", day: "tue", name: "Yoga", start: "18:30", end: "19:15", instructor: "Alvelyn" },
-        { id: "dh-tue-1915-cardio", day: "tue", name: "Cardio", start: "19:15", end: "20:00", instructor: "Alvelyn" },
-        { id: "dh-tue-2000-stretch", day: "tue", name: "Deep Stretch", start: "20:00", end: "20:45", instructor: "Alvelyn" },
-        { id: "dh-wed-1130-power", day: "wed", name: "Power", start: "11:30", end: "12:30", instructor: "Amirul" },
-        { id: "dh-wed-1930-zumba", day: "wed", name: "Zumba", start: "19:30", end: "20:30", instructor: "Su Yi" },
-        { id: "dh-thu-1830-cardio", day: "thu", name: "Cardio", start: "18:30", end: "19:15", instructor: "Alvelyn" },
-        { id: "dh-thu-1915-abt", day: "thu", name: "Strength/ABT", start: "19:15", end: "20:00", instructor: "Alvelyn" },
-        { id: "dh-thu-2000-myo", day: "thu", name: "Myofascial Ball Release", start: "20:00", end: "20:45", instructor: "Alvelyn" },
+        { id: "dh-tue-1830-yoga", day: "tue", name: "Yoga - Dh", start: "18:30", end: "19:30", instructor: "Alvelyn" },
+        { id: "dh-tue-1915-cardio", day: "tue", name: "Cardio - DH", start: "19:15", end: "20:15", instructor: "Alvelyn" },
+        { id: "dh-tue-2000-stretch", day: "tue", name: "Deep Stretch - DH", start: "20:00", end: "21:00", instructor: "Alvelyn" },
+        { id: "dh-wed-1130-power", day: "wed", name: "Power - DH", start: "11:30", end: "12:30", instructor: "Amirul" },
+        { id: "dh-wed-1930-zumba", day: "wed", name: "Zumba - DH", start: "19:30", end: "20:30", instructor: "Su Yi" },
+        { id: "dh-thu-1830-cardio", day: "thu", name: "Cardio - DH", start: "18:30", end: "19:30", instructor: "Alvelyn" },
+        { id: "dh-thu-1915-abt", day: "thu", name: "Strength/ABT - DH", start: "19:15", end: "20:15", instructor: "Alvelyn" },
+        { id: "dh-thu-2000-myo", day: "thu", name: "Myofascial Ball Release - DH", start: "20:00", end: "21:00", instructor: "Alvelyn" },
+        { id: "dh-fri-1900-run-club", day: "fri", name: "Run Club - DH", start: "19:00", end: "20:00", instructor: "Amirul" },
         { id: "dh-sat-1100-hybrid", day: "sat", name: "Hybrid", start: "11:00", end: "12:00", instructor: "Alvelyn" },
-        { id: "dh-sat-1200-stretch", day: "sat", name: "Deep Stretch", start: "12:00", end: "13:00", instructor: "Alvelyn" },
+        { id: "dh-sat-1200-stretch", day: "sat", name: "Deep Stretch - DH", start: "12:00", end: "13:00", instructor: "Alvelyn" },
         { id: "dh-sat-1400-kickboxing", day: "sat", name: "Kickboxing", start: "14:00", end: "15:00", instructor: "Bronson" }
       ]
     },
@@ -64,20 +65,20 @@ window.AF_SEED = {
       whatsappLabel: "",
       bookingUrl: "https://af-class-booking.fly.dev",
       bookingNote: "Book online.",
-      scheduleRev: 2,
+      scheduleRev: 3,
       notes: "",
       classes: [
-        { id: "ch-mon-1800-pilates", day: "mon", name: "Pilates", start: "18:00", end: "18:55" },
-        { id: "ch-mon-1905-pilates", day: "mon", name: "Pilates", start: "19:05", end: "20:00" },
-        { id: "ch-mon-2010-combat", day: "mon", name: "Body Combat", start: "20:10", end: "21:00" },
-        { id: "ch-tue-1200-hiit", day: "tue", name: "HIIT", start: "12:00", end: "13:00" },
-        { id: "ch-tue-1900-combat", day: "tue", name: "Body Combat", start: "19:00", end: "20:00" },
-        { id: "ch-wed-1900-muay", day: "wed", name: "Muay Thai", start: "19:00", end: "20:00" },
-        { id: "ch-thu-1200-pilates", day: "thu", name: "Mobility Pilates", start: "12:00", end: "13:00" },
-        { id: "ch-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00", note: "Beginner · very gentle" },
-        { id: "ch-fri-1200-release", day: "fri", name: "Release & Restore", start: "12:00", end: "13:00", note: "New" },
-        { id: "ch-fri-1900-zumba", day: "fri", name: "Zumba", start: "19:00", end: "20:00" },
-        { id: "ch-sat-1100-combat", day: "sat", name: "Body Combat", start: "11:00", end: "12:00" }
+        { id: "ch-mon-1800-pilates", day: "mon", name: "Pilates", start: "18:00", end: "18:55", instructor: "Eka" },
+        { id: "ch-mon-1905-pilates", day: "mon", name: "Pilates", start: "19:05", end: "20:00", instructor: "Eka" },
+        { id: "ch-mon-2010-combat", day: "mon", name: "Body Combat", start: "20:10", end: "21:00", instructor: "Jia En" },
+        { id: "ch-tue-1200-hiit", day: "tue", name: "HIIT", start: "12:00", end: "13:00", instructor: "Leonard" },
+        { id: "ch-tue-1900-combat", day: "tue", name: "Body Combat", start: "19:00", end: "20:00", instructor: "Au Min Li" },
+        { id: "ch-wed-1900-muay", day: "wed", name: "Muay Thai", start: "19:00", end: "20:00", instructor: "Iskandar" },
+        { id: "ch-thu-1200-pilates", day: "thu", name: "Mobility Pilates", start: "12:00", end: "13:00", instructor: "Ruth" },
+        { id: "ch-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00", instructor: "Josephine", note: "Beginner · very gentle" },
+        { id: "ch-fri-1200-release", day: "fri", name: "Release & Restore", start: "12:00", end: "13:00", instructor: "Ruth", note: "New" },
+        { id: "ch-fri-1900-zumba", day: "fri", name: "Zumba", start: "19:00", end: "20:00", instructor: "Seed" },
+        { id: "ch-sat-1100-combat", day: "sat", name: "Body Combat", start: "11:00", end: "12:00", instructor: "Au Min Li" }
       ]
     },
     {
@@ -87,15 +88,17 @@ window.AF_SEED = {
       color: "#f97316",
       whatsapp: "",
       whatsappLabel: "",
-      bookingNote: "",
+      bookingNote: "Book online.",
+      scheduleRev: 1,
+      bookingUrl: "https://af-class-booking.fly.dev",
       notes: "",
       classes: [
-        { id: "mp-mon-1900-bodycombat", day: "mon", name: "BodyCombat", start: "19:00", end: "20:00" },
-        { id: "mp-tue-1900-yoga", day: "tue", name: "Yoga", start: "19:00", end: "20:00" },
-        { id: "mp-wed-1900-pilates", day: "wed", name: "Mobility Pilates", start: "19:00", end: "20:00" },
-        { id: "mp-thu-1900-zumba", day: "thu", name: "Zumba", start: "19:00", end: "20:00" },
-        { id: "mp-fri-1900-hiit", day: "fri", name: "HIIT", start: "19:00", end: "20:00", note: "New" },
-        { id: "mp-sat-1100-pilates", day: "sat", name: "Pilates", start: "11:00", end: "12:00" }
+        { id: "mp-mon-1900-bodycombat", day: "mon", name: "BodyCombat", start: "19:15", end: "20:15", instructor: "Philip" },
+        { id: "mp-tue-1900-yoga", day: "tue", name: "Yoga", start: "19:15", end: "20:15", instructor: "Josephine" },
+        { id: "mp-wed-1900-pilates", day: "wed", name: "Mobility Pilates", start: "19:15", end: "20:15", instructor: "Ruth" },
+        { id: "mp-thu-1900-zumba", day: "thu", name: "Zumba", start: "19:15", end: "20:15", instructor: "Kal" },
+        { id: "mp-fri-1900-hiit", day: "fri", name: "HIIT", start: "19:15", end: "20:15", instructor: "Indra", note: "New" },
+        { id: "mp-sat-1100-pilates", day: "sat", name: "Pilates", start: "11:00", end: "12:00", instructor: "Shirley" }
       ]
     },
     {
@@ -243,13 +246,14 @@ window.AF_SEED = {
       whatsappLabel: "",
       bookingUrl: "https://af-class-booking.fly.dev",
       bookingNote: "Book online.",
+      scheduleRev: 1,
       notes: "",
       classes: [
-        { id: "tp-mon-1930-muay", day: "mon", name: "Muay Thai", start: "19:30", end: "20:30" },
-        { id: "tp-wed-1200-pilates", day: "wed", name: "Pilates", start: "12:00", end: "13:00" },
-        { id: "tp-wed-1900-hiit", day: "wed", name: "HIIT", start: "19:00", end: "20:00" },
-        { id: "tp-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00" },
-        { id: "tp-fri-1900-kickboxing", day: "fri", name: "Kick Boxing", start: "19:00", end: "20:00" }
+        { id: "tp-mon-1930-muay", day: "mon", name: "Muay Thai", start: "19:30", end: "20:30", instructor: "Iskandar" },
+        { id: "tp-wed-1200-pilates", day: "wed", name: "Pilates", start: "12:00", end: "13:00", instructor: "Ruth" },
+        { id: "tp-wed-1900-hiit", day: "wed", name: "HIIT", start: "19:00", end: "20:00", instructor: "Indra" },
+        { id: "tp-thu-1900-yoga", day: "thu", name: "Yoga", start: "19:00", end: "20:00", instructor: "Gail" },
+        { id: "tp-fri-1900-kickboxing", day: "fri", name: "Kick Boxing", start: "19:00", end: "20:00", instructor: "Iskandar" }
       ]
     },
     {
@@ -279,13 +283,12 @@ window.AF_SEED = {
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=78712&uid=0&id_class_tab=1",
       bookingNote: "Book online via WellnessLiving.",
-      scheduleRev: 1,
+      scheduleRev: 2,
       notes: "2026 Group Class Schedule",
       classes: [
         { id: "tm-mon-1815-yoga", day: "mon", name: "Hatha Yoga", start: "18:15", end: "19:15", instructor: "Audrey" },
         { id: "tm-mon-1930-combat", day: "mon", name: "Body Combat", start: "19:30", end: "20:30", instructor: "Jun Yee" },
         { id: "tm-mon-2030-pump", day: "mon", name: "Body Pump", start: "20:30", end: "21:30", instructor: "Yoshiko" },
-        { id: "tm-tue-1830-zumba", day: "tue", name: "Zumba", start: "18:30", end: "19:30", instructor: "Lena" },
         { id: "tm-tue-1930-yoga", day: "tue", name: "Hatha Yoga", start: "19:30", end: "20:30", instructor: "Audrey" },
         { id: "tm-tue-2040-ride", day: "tue", name: "Ride & Lift", start: "20:40", end: "21:40", instructor: "Debra" },
         { id: "tm-wed-1830-combat", day: "wed", name: "Body Combat", start: "18:30", end: "19:30", instructor: "Jun Yee" },
@@ -350,7 +353,7 @@ window.AF_SEED = {
       whatsapp: "",
       whatsappLabel: "",
       bookingUrl: "https://www.wellnessliving.com/rs/schedule/afc_singapore?k_business=823453&k_class_tab=81567&uid=0&id_class_tab=1",
-      scheduleRev: 2,
+      scheduleRev: 3,
       bookingNote: "Book via the Wellness Living Achieve App.",
       notes: "",
       classes: [
@@ -369,7 +372,7 @@ window.AF_SEED = {
         { id: "ppasir-fri-2000-combat", day: "fri", name: "Body Combat", start: "20:00", end: "21:00", instructor: "Carrie" },
         { id: "ppasir-sat-1000-pilates", day: "sat", name: "Pilates", start: "10:00", end: "11:00", instructor: "Val" },
         { id: "ppasir-sat-1130-combat", day: "sat", name: "Body Combat", start: "11:30", end: "12:30", instructor: "Jon" },
-        { id: "ppasir-sun-1000-vinyasa", day: "sun", name: "Vinyasa Yoga", start: "10:00", end: "11:00", instructor: "Min Yi" },
+        { id: "ppasir-sun-1000-vinyasa", day: "sun", name: "Vinyasa Yoga", start: "10:00", end: "11:00", instructor: "Min" },
         { id: "ppasir-sun-1130-combat", day: "sun", name: "Body Combat", start: "11:30", end: "12:30", instructor: "Esther" }
       ]
     },

@@ -12,11 +12,11 @@ on:
         default: false
 
 jobs:
-  book:
+  book-tanjong-pagar-yoga:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Book class
+      - name: Book Tanjong Pagar Thursday Yoga
         env:
           AF_BOOKING_EMAIL: ${{ secrets.AF_BOOKING_EMAIL }}
           AF_BOOKING_WHATSAPP: ${{ secrets.AF_BOOKING_WHATSAPP }}
@@ -29,6 +29,31 @@ jobs:
           fi
           if [ -z "$AF_BOOKING_EMAIL" ] || [ -z "$AF_BOOKING_WHATSAPP" ]; then
             echo "Add repository secrets AF_BOOKING_EMAIL and AF_BOOKING_WHATSAPP first."
+            exit 1
+          fi
+          python3 scripts/book-tanjong-pagar-thursday-yoga.py
+
+  book-city-hall-pilates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Book City Hall Monday 19:05 Pilates
+        env:
+          AF_BOOKING_EMAIL: ${{ secrets.AF_CH_PILATES_EMAIL }}
+          AF_BOOKING_WHATSAPP: ${{ secrets.AF_CH_PILATES_WHATSAPP }}
+          AF_TELEGRAM_BOT_TOKEN: ${{ secrets.AF_TELEGRAM_BOT_TOKEN }}
+          AF_TELEGRAM_CHAT_ID: ${{ secrets.AF_TELEGRAM_CHAT_ID }}
+          AF_BOOK_CLUB: city-hall
+          AF_BOOK_DAY: Monday
+          AF_BOOK_TITLE: pilates
+          AF_BOOK_START: "19:05"
+        run: |
+          if [ "${{ github.event.inputs.notify_test }}" = "true" ]; then
+            echo "Notify test is sent by the Tanjong Pagar job."
+            exit 0
+          fi
+          if [ -z "$AF_BOOKING_EMAIL" ] || [ -z "$AF_BOOKING_WHATSAPP" ]; then
+            echo "Add repository secrets AF_CH_PILATES_EMAIL and AF_CH_PILATES_WHATSAPP first."
             exit 1
           fi
           python3 scripts/book-tanjong-pagar-thursday-yoga.py

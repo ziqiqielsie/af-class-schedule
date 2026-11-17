@@ -2,3 +2,8 @@ AF_BOOKING_EMAIL=you@example.com
 AF_BOOKING_WHATSAPP=81234567
 AF_TELEGRAM_BOT_TOKEN=123456:ABC-your-telegram-bot-token
 AF_TELEGRAM_CHAT_ID=123456789
+# Optional overrides for a different class / account:
+# AF_BOOK_CLUB=city-hall
+# AF_BOOK_DAY=Monday
+# AF_BOOK_TITLE=pilates
+# AF_BOOK_START=19:05

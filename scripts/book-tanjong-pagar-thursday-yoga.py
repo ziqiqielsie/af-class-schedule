@@ -27,12 +27,24 @@ from http.cookiejar import CookieJar
 from typing import Any
 
 BASE = "https://af-class-booking.fly.dev"
-CLUB = "tanjong-pagar"
-DAY = "Thursday"
-TITLE_NEEDLE = "yoga"
 SGT = timezone(timedelta(hours=8))
 POLL_SECONDS = 15
 MAX_POLLS = 40
+
+
+def target_config() -> dict[str, str]:
+    return {
+        "club": (os.environ.get("AF_BOOK_CLUB") or "tanjong-pagar").strip().lower(),
+        "day": (os.environ.get("AF_BOOK_DAY") or "Thursday").strip(),
+        "title": (os.environ.get("AF_BOOK_TITLE") or "yoga").strip().lower(),
+        "start": (os.environ.get("AF_BOOK_START") or "").strip()[:5],
+    }
+
+
+def target_label(cfg: dict[str, str] | None = None) -> str:
+    cfg = cfg or target_config()
+    start = f" {cfg['start']}" if cfg["start"] else ""
+    return f"{cfg['club']} {cfg['day']}{start} {cfg['title']}".strip()
 
 
 def sgt_now() -> datetime:
@@ -118,12 +130,16 @@ class BookingClient:
         )
 
 
-def is_target(cls: dict[str, Any]) -> bool:
-    if str(cls.get("club_code") or "").lower() != CLUB:
+def is_target(cls: dict[str, Any], cfg: dict[str, str] | None = None) -> bool:
+    cfg = cfg or target_config()
+    if str(cls.get("club_code") or "").lower() != cfg["club"]:
         return False
-    if str(cls.get("day_of_week") or "") != DAY:
+    if str(cls.get("day_of_week") or "") != cfg["day"]:
         return False
-    if TITLE_NEEDLE not in str(cls.get("title") or "").lower():
+    if cfg["title"] not in str(cls.get("title") or "").lower():
+        return False
+    start = str(cls.get("start_time") or "")[:5]
+    if cfg["start"] and start != cfg["start"]:
         return False
     if cls.get("is_cancelled") or cls.get("status") == "CANCELLED":
         return False
@@ -255,7 +271,7 @@ def book_class(args: argparse.Namespace) -> tuple[int, str]:
             return 1, f"登录成功（{who}）\n会员资料被暂停，无法预约。"
         target = pick_class(classes)
         if not target:
-            return 1, f"登录成功（{who}）\n没有找到即将到来的 Tanjong Pagar 周四 Yoga。"
+            return 1, f"登录成功（{who}）\n没有找到即将到来的 {target_label()}。"
 
         print(describe(target), flush=True)
         line = class_line(target)
@@ -314,7 +330,7 @@ def book_class(args: argparse.Namespace) -> tuple[int, str]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Book Tanjong Pagar Thursday Yoga")
+    parser = argparse.ArgumentParser(description="Book an AF group class (default: Tanjong Pagar Thursday Yoga)")
     parser.add_argument("--dry-run", action="store_true", help="Login and find the class, but do not book")
     parser.add_argument("--no-wait", action="store_true", help="Fail instead of waiting if booking is still locked")
     parser.add_argument("--notify-test", action="store_true", help="Send a Telegram test message and exit")
@@ -338,7 +354,9 @@ def main() -> int:
     except Exception as err:
         code = 1
         detail = f"出错了\n{err}"
-    notify_telegram(format_report(detail))
+    report = format_report(detail)
+    print(report, flush=True)
+    notify_telegram(report)
     return code
 
 

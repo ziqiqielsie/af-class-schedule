@@ -1,0 +1,24 @@
+# cron-job.org → GitHub workflow_dispatch
+# 1st and 15th of each month, 14:00 Asia/Singapore
+#
+# URL
+# https://api.github.com/repos/ziqiqielsie/af-class-schedule/actions/workflows/sync-booking-schedules.yml/dispatches
+#
+# Method
+# POST
+#
+# Headers
+# Accept: application/vnd.github+json
+# Authorization: Bearer <fine-grained-pat>
+# Content-Type: application/json
+# X-GitHub-Api-Version: 2022-11-28
+#
+# Body
+# {"ref":"main"}
+#
+# PAT permissions (this repo only):
+# Actions: Read and write
+# Contents: Read-only
+#
+# GitHub's own cron is often late on public repos. This extra ping is optional
+# if you want the 1st/15th run closer to 14:00 SGT.

@@ -61,9 +61,9 @@ window.AF_SEED = {
       color: "#e891a8",
       whatsapp: "",
       whatsappLabel: "",
-      bookingUrl: "",
-      bookingNote: "Sign up via the WhatsApp QR on the class poster.",
-      scheduleRev: 1,
+      bookingUrl: "https://af-class-booking.fly.dev",
+      bookingNote: "Book online.",
+      scheduleRev: 2,
       notes: "",
       classes: [
         { id: "ch-mon-1800-pilates", day: "mon", name: "Pilates", start: "18:00", end: "18:55" },

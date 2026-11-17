@@ -113,6 +113,7 @@
         gym.classes = structuredClone(seeded.classes);
         gym.scheduleRev = seeded.scheduleRev;
         if (seeded.bookingNote) gym.bookingNote = seeded.bookingNote;
+        if (seeded.bookingUrl) gym.bookingUrl = seeded.bookingUrl;
       }
     }
     return data;

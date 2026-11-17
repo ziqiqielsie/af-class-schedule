@@ -161,7 +161,7 @@
   function classKind(name) {
     const n = String(name || "").toLowerCase();
     if (/pilates/.test(n)) return "pilates";
-    if (/yoga|yin|stretch|mobility|myofascial|meditat|sound|yogalate|release/.test(n)) return "yoga";
+    if (/yoga|yin|stretch|mobility|myofascial|meditat|sound|yogalate|split|inversion|release/.test(n)) return "yoga";
     if (/combat|boxing|kickbox|muay|bodycombat/.test(n)) return "combat";
     if (/pump|strength|bar |core|hyrox|power|abt|abs|kettle|upper/.test(n)) return "strength";
     if (/zumba|dance|kpop|choreography|bounce/.test(n)) return "dance";

@@ -383,6 +383,21 @@ window.AF_SEED = {
         { id: "dg-tue-1900-hiit", day: "tue", name: "HIIT", start: "19:00", end: "20:00", from: "2026-10-20", note: "From 20 Oct" },
         { id: "dg-thu-1900-stretch", day: "thu", name: "Stretch & Mobility", start: "19:00", end: "20:00" }
       ]
+    },
+    {
+      id: "labrador-view",
+      name: "Labrador View",
+      region: "south",
+      color: "#3f7d4e",
+      whatsapp: "",
+      whatsappLabel: "",
+      bookingUrl: "https://chat.whatsapp.com/EUzU69gryMkHUltWXPE5De?s=cl&p=i&iam=2",
+      bookingNote: "Register by voting in the WhatsApp group.",
+      notes: "",
+      classes: [
+        { id: "lv-tue-1215-split", day: "tue", name: "Split & Inversion", start: "12:15", end: "13:15" },
+        { id: "lv-wed-1215-yogalates", day: "wed", name: "Yogalates", start: "12:15", end: "13:15" }
+      ]
     }
   ]
 };

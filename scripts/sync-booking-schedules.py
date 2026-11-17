@@ -477,48 +477,39 @@ def fetch_fly_sessions() -> dict[str, list[dict[str, str]]]:
     return grouped
 
 
-def _wait_dates(page, minimum: int = 6) -> None:
+def _wait_quiet(page, timeout_ms: int = 20000) -> None:
     try:
         page.wait_for_function(
-            """min => (document.body.innerText.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun), /g) || []).length >= min""",
-            arg=minimum,
-            timeout=20000,
+            "() => /(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), /.test(document.body.innerText)",
+            timeout=timeout_ms,
         )
     except Exception:
-        page.wait_for_timeout(2000)
+        page.wait_for_timeout(3000)
 
 
-def scrape_wellnessliving(url: str) -> list[dict[str, str]]:
-    from playwright.sync_api import sync_playwright
-
-    sessions: list[dict[str, str]] = []
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.set_default_timeout(60000)
-        page.goto(url, wait_until="domcontentloaded")
-        page.wait_for_function("() => /(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun), /.test(document.body.innerText)", timeout=45000)
-        page.evaluate(WL_EXTRACT_JS)
-        _wait_dates(page)
-        first = page.evaluate(WL_EXTRACT_JS)
-        sessions.extend(parse_wl_text(first.get("text") or ""))
-        previous = first.get("range") or ""
-        page.evaluate(WL_NEXT_JS)
-        try:
-            page.wait_for_function(
-                """prev => {
-                  const button = [...document.querySelectorAll('button')].find(item => /[A-Z][a-z]{2} \\d{1,2}\\s*[–-]/.test(item.innerText || ''));
-                  return button && button.innerText.trim() && button.innerText.trim() !== prev;
-                }""",
-                arg=previous,
-                timeout=20000,
-            )
-        except Exception:
-            page.wait_for_timeout(2500)
-        _wait_dates(page)
-        second = page.evaluate(WL_EXTRACT_JS)
-        sessions.extend(parse_wl_text(second.get("text") or ""))
-        browser.close()
+def scrape_wellnessliving(page, url: str) -> list[dict[str, str]]:
+    page.goto(url, wait_until="domcontentloaded")
+    _wait_quiet(page)
+    page.evaluate(WL_EXTRACT_JS)
+    page.wait_for_timeout(2000)
+    first = page.evaluate(WL_EXTRACT_JS)
+    sessions = parse_wl_text(first.get("text") or "")
+    previous = first.get("range") or ""
+    page.evaluate(WL_NEXT_JS)
+    try:
+        page.wait_for_function(
+            """prev => {
+              const button = [...document.querySelectorAll('button')].find(item => /[A-Z][a-z]{2} \\d{1,2}\\s*[–-]/.test(item.innerText || ''));
+              return button && button.innerText.trim() && button.innerText.trim() !== prev;
+            }""",
+            arg=previous,
+            timeout=15000,
+        )
+    except Exception:
+        page.wait_for_timeout(2500)
+    page.wait_for_timeout(1500)
+    second = page.evaluate(WL_EXTRACT_JS)
+    sessions.extend(parse_wl_text(second.get("text") or ""))
     if not sessions:
         raise RuntimeError("no classes parsed")
     weeks = {datetime.fromisoformat(item["date"]).isocalendar()[:2] for item in sessions if item.get("date")}
@@ -660,26 +651,34 @@ def main() -> int:
             if "wellnessliving.com" in str(gym.get("bookingUrl") or "")
         ]
         try:
-            from playwright.sync_api import sync_playwright  # noqa: F401
+            from playwright.sync_api import sync_playwright
         except ImportError:
             errors.append("playwright is not installed (needed for WellnessLiving)")
             wl_gyms = []
-        for gym in wl_gyms:
-            try:
-                sessions = scrape_wellnessliving(str(gym["bookingUrl"]))
-            except Exception as err:
-                notes.append(f"{gym['name']}: skipped ({err})")
-                continue
-            merged = merge_classes(gym, sessions)
-            if signature(gym.get("classes") or []) == signature(merged):
-                notes.append(f"{gym['name']}: unchanged")
-                continue
-            next_rev = int(gym.get("scheduleRev") or 0) + 1
-            diff = describe_changes(gym.get("classes") or [], merged)
-            notes.append(f"{gym['name']}: updated\n{diff}")
-            if not args.dry_run:
-                src = write_gym(src, gym["id"], merged, next_rev, None, None)
-            changed.append(gym["name"])
+        if wl_gyms:
+            with sync_playwright() as playwright:
+                browser = playwright.chromium.launch(headless=True)
+                page = browser.new_page(viewport={"width": 1440, "height": 2200})
+                page.set_default_timeout(60000)
+                try:
+                    for gym in wl_gyms:
+                        try:
+                            sessions = scrape_wellnessliving(page, str(gym["bookingUrl"]))
+                        except Exception as err:
+                            notes.append(f"{gym['name']}: skipped ({err})")
+                            continue
+                        merged = merge_classes(gym, sessions)
+                        if signature(gym.get("classes") or []) == signature(merged):
+                            notes.append(f"{gym['name']}: unchanged")
+                            continue
+                        next_rev = int(gym.get("scheduleRev") or 0) + 1
+                        diff = describe_changes(gym.get("classes") or [], merged)
+                        notes.append(f"{gym['name']}: updated\n{diff}")
+                        if not args.dry_run:
+                            src = write_gym(src, gym["id"], merged, next_rev, None, None)
+                        changed.append(gym["name"])
+                finally:
+                    browser.close()
 
     if not args.dry_run:
         src = stamp_checked(src, sgt_now().date().isoformat())
